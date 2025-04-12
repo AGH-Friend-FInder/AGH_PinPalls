@@ -59,10 +59,10 @@ class _MapScreenState extends State<MapScreen> {
       ),
       floatingActionButton: MenuAnchor(
         builder: (
-            BuildContext context,
-            MenuController controller,
-            Widget? child,
-            ) {
+          BuildContext context,
+          MenuController controller,
+          Widget? child,
+        ) {
           return FloatingActionButton(
             onPressed: () {
               if (controller.isOpen) {
@@ -77,9 +77,8 @@ class _MapScreenState extends State<MapScreen> {
         },
         menuChildren: List<MenuItemButton>.generate(
           3,
-              (int index) => MenuItemButton(
-            onPressed:
-                () => (/*TODO: store the selected item*/),
+          (int index) => MenuItemButton(
+            onPressed: () => (/*TODO: store the selected item*/),
             child: Text('Item ${index + 1}'),
           ),
         ),

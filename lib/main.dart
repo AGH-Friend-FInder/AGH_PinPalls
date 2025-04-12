@@ -15,16 +15,14 @@ class PinPalsApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'AGH PinPals',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
+      theme: ThemeData(primarySwatch: Colors.green),
       // Zawsze startuje od ekranu logowania
       initialRoute: '/login',
       routes: {
         '/login': (context) => LoginScreen(),
         '/map': (context) => const MapScreen(),
         '/settings': (context) => const SettingsScreen(),
-        '/groups': (context) => const GroupsScreen()
+        '/groups': (context) => const GroupsScreen(),
       },
     );
   }
