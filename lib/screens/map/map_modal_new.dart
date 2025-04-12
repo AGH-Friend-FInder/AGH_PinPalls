@@ -170,7 +170,7 @@ class _PeopleCounterState extends State<_PeopleCounter> {
           icon: const Icon(Icons.remove),
           onPressed: () {
             setState(() {
-              widget.tagState.decrementCounter();
+              widget.tagState.decrementPeopleCount();
             });
           },
         ),
@@ -178,7 +178,7 @@ class _PeopleCounterState extends State<_PeopleCounter> {
         const SizedBox(width: 20),
         // Wyświetlanie aktualnego stanu licznika
         Text(
-          '${widget.tagState.counter}',
+          '${widget.tagState.peopleCounter}',
           style: const TextStyle(fontSize: 24),
         ),
         const SizedBox(width: 20),
@@ -187,7 +187,7 @@ class _PeopleCounterState extends State<_PeopleCounter> {
           icon: const Icon(Icons.add),
           onPressed: () {
             setState(() {
-              widget.tagState.incrementCounter();
+              widget.tagState.incrementPeopleCount();
             });
           },
         ),

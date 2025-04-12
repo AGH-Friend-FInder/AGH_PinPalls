@@ -21,17 +21,33 @@ class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
 
   @override
-  State<MapScreen> createState() => _MapScreenState();
+  State<MapScreen> createState() => MapScreenState();
 }
 
-class _MapScreenState extends State<MapScreen> with OSMMixinObserver {
+class MapScreenState extends State<MapScreen> with OSMMixinObserver {
   final MapTagState _yourMarker = MapTagState();
-
   final MapController _controller = MapController(initPosition: startPosition);
+
+  // final List<MapTagState> _othersGroupMarkers = [];
+
+  // void addNewMarker() {
+  //
+  // }
+
+  Future<void> selectCurrentLocation() async {
+    await _controller.currentLocation();
+    GeoPoint? currentLocation = await _controller.myLocation();
+
+    debugPrint(
+      "Current location: ${currentLocation.latitude}, ${currentLocation.longitude}",
+    );
+    onSingleTap(currentLocation);
+  }
 
   @override
   Widget build(BuildContext context) {
     return MapMenuBar(
+      onCurrentLocationPressed: selectCurrentLocation,
       child: OSMFlutter(
         onGeoPointClicked: onMarkerClicked,
         controller: _controller,
@@ -42,10 +58,7 @@ class _MapScreenState extends State<MapScreen> with OSMMixinObserver {
             maxZoomLevel: 19,
           ),
           enableRotationByGesture: true,
-          showDefaultInfoWindow: true,
-          // userTrackingOption: UserTrackingOption(
-          //     enableTracking: true
-          // )
+          // showDefaultInfoWindow: true,
         ),
       ),
     );
@@ -84,26 +97,32 @@ class _MapScreenState extends State<MapScreen> with OSMMixinObserver {
   @override
   void onSingleTap(GeoPoint position) async {
     super.onSingleTap(position);
-
     if (!areaBox.inBoundingBox(position)) return;
-    if (!await showMapBottomModal(context, _yourMarker)) return;
 
-    if (_yourMarker.position == null) {
-      _controller.addMarker(
-        position,
-        markerIcon: const MarkerIcon(
-          icon: Icon(Icons.person, color: Colors.red, size: 48),
-        ),
-      );
+    _controller.addMarker(
+      position,
+      markerIcon: const MarkerIcon(
+        icon: Icon(Icons.location_on, color: Colors.blue, size: 48),
+      ),
+    );
 
-      _yourMarker.position = position;
-    } else {
-      _controller.changeLocationMarker(
-        oldLocation: _yourMarker.position!,
-        newLocation: position,
-      );
-
-      _yourMarker.position = position;
+    if (!await showMapBottomModal(context, _yourMarker)) {
+      _controller.removeMarker(position);
+      return;
     }
+
+    _controller.changeLocationMarker(
+      oldLocation: position,
+      newLocation: position,
+      markerIcon: const MarkerIcon(
+        icon: Icon(Icons.person, color: Colors.red, size: 48),
+      ),
+    );
+
+    if (_yourMarker.position != null) {
+      _controller.removeMarker(_yourMarker.position!);
+    }
+
+    _yourMarker.position = position;
   }
 }

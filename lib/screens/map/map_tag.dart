@@ -3,15 +3,15 @@ import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 class MapTagState {
   GeoPoint? position;
   List<String> selectedTags = [];
-  int counter = 0;
+  int peopleCounter = 0;
 
-  void incrementCounter() {
-    counter++;
+  void incrementPeopleCount() {
+    peopleCounter++;
   }
 
-  void decrementCounter() {
-    if (counter > 0) {
-      counter--;
+  void decrementPeopleCount() {
+    if (peopleCounter > 0) {
+      peopleCounter--;
     }
   }
 }

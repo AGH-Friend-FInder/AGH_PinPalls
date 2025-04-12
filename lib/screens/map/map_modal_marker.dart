@@ -24,7 +24,7 @@ void showMarkerInfo(BuildContext context, MapTagState tagState) {
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Text(
-                  '${tagState.counter}',
+                  '${tagState.peopleCounter}',
                   style: const TextStyle(fontSize: 24),
                 ),
               ),
