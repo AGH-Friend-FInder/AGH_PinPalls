@@ -80,7 +80,7 @@ class _MapScreenState extends State<MapScreen> {
           3,
           (int index) => MenuItemButton(
             onPressed:
-                () => setState(() => _selectedMenu = SampleItem.values[index]),
+                () => (/*TODO: store the selected item*/),
             child: Text('Item ${index + 1}'),
           ),
         ),
