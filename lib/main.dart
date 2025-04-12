@@ -1,6 +1,7 @@
-import 'package:agh_pin_palls/screens/groups_screen.dart';
-import 'package:agh_pin_palls/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
+
+import 'screens/groups_screen.dart';
+import 'screens/settings_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/map_screen.dart';
 import 'screens/register_screen.dart';
@@ -17,7 +18,7 @@ class PinPalsApp extends StatelessWidget {
     return MaterialApp(
       title: 'AGH PinPals',
       theme: ThemeData(primarySwatch: Colors.green),
-      initialRoute: '/login',
+      initialRoute: '/groups',
       routes: {
         '/login': (context) => LoginScreen(),
         '/map': (context) => const MapScreen(),
