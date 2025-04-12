@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:agh_pin_palls/screens/register_screen.dart';
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -61,7 +59,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           SizedBox(
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                //TODO: login mockup, add backend call
+                                Navigator.pushNamed(context, '/map');
+                              },
                               child: Text("Sign in"),
                             ),
                           ),
@@ -69,13 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(
                             child: OutlinedButton(
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (context) => const RegisterScreen(),
-                                  ),
-                                );
+                                Navigator.pushNamed(context, '/register');
                               },
                               child: Text("Register"),
                             ),

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:agh_pin_palls/screens/login_screen.dart';
-
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -15,6 +13,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text("Register")),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(30.0),
@@ -82,20 +81,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const LoginScreen(),
-                                  ),
-                                );
-                              },
-                              child: Text("Sign in"),
-                            ),
-                          ),
-
                           const SizedBox(width: 20),
                           SizedBox(
                             child: OutlinedButton(
