@@ -1,2 +1,2 @@
 # AGH_PinPalls
-test main push
+test main
