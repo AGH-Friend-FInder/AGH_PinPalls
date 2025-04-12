@@ -1,15 +1,15 @@
-import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/material.dart';
 
-List<String> tags = ["Informatyka", "Wydział Ceramiki", "Kulturoznawstwo"];
+List<String> people = ["John Doe"];
 
-class GroupsScreen extends StatelessWidget {
-  const GroupsScreen({super.key});
+class CreateGroupsScreen extends StatelessWidget {
+  const CreateGroupsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Groups')),
+      appBar: AppBar(title: const Text('Create Group')),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(30.0),
@@ -21,7 +21,7 @@ class GroupsScreen extends StatelessWidget {
                     height: 150,
                     image: AssetImage('assets/PinPals_nb.png'),
                   ),
-                  Text("Group panel"),
+                  Text("Create your group"),
                 ],
               ),
 
@@ -30,28 +30,39 @@ class GroupsScreen extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: 30.0),
                   child: Column(
                     children: [
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: "Group Name",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+
                       DropdownSearch<String>.multiSelection(
-                        items: (f, cs) => tags,
+                        items: (f, cs) => people,
                         decoratorProps: DropDownDecoratorProps(
                           decoration: InputDecoration(
-                            labelText: "Your groups:",
-                            hintText: "Add groups you'd like to follow",
+                            labelText: "Members:",
+                            hintText: "Add users who will see your group",
                           ),
                         ),
                         popupProps: PopupPropsMultiSelection.menu(
                           showSearchBox: true,
                         ),
                       ),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-
                         children: [
                           SizedBox(
                             child: ElevatedButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, '/groups/create');
+                                Navigator.pushNamed(context, '/groups');
                               },
-                              child: Text("Create your group"),
+                              child: Text("Create Group"),
                             ),
                           ),
                           const SizedBox(width: 20),
