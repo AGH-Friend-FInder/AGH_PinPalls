@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'package:agh_pin_palls/screens/register_screen.dart';
+import 'package:agh_pin_palls/screens/login_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   // final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 150,
                     image: AssetImage('assets/PinPals_nb.png'),
                   ),
-                  Text("Welcome! Please Log in."),
+                  Text("Fill in the registration form to get started!"),
                 ],
               ),
 
@@ -35,6 +35,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: EdgeInsets.symmetric(vertical: 30.0),
                   child: Column(
                     children: [
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: "Name",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+
                       TextFormField(
                         decoration: InputDecoration(
                           labelText: "Email",
@@ -56,27 +67,39 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 20),
+
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: "Confirm Password",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
                             child: ElevatedButton(
-                              onPressed: () {},
-                              child: Text("Sign in"),
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          SizedBox(
-                            child: OutlinedButton(
                               onPressed: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder:
-                                        (context) => const RegisterScreen(),
+                                    builder: (context) => const LoginScreen(),
                                   ),
                                 );
                               },
+                              child: Text("Sign in"),
+                            ),
+                          ),
+
+                          const SizedBox(width: 20),
+                          SizedBox(
+                            child: OutlinedButton(
+                              onPressed: () {},
                               child: Text("Register"),
                             ),
                           ),
