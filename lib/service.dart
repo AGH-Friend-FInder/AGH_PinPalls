@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 class Service {
-  final String baseUrl = 'http://localhost:8080';
+  final String baseUrl = 'http://10.0.2.2:8080';
 
   Future<Map<String, dynamic>> getUserById(int id) async {
     final response = await http.get(Uri.parse('$baseUrl/users/$id'));
@@ -24,11 +25,11 @@ class Service {
 
   Future<void> createUser(Map<String, dynamic> user) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/users'),
+      Uri.parse('$baseUrl/users/register'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(user),
     );
-    if (response.statusCode != 201) {
+    if (response.statusCode != 200) {
       throw Exception('Failed to create user');
     }
   }
