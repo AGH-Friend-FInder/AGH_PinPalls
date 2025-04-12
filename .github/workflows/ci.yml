@@ -1,0 +1,25 @@
+name: Flutter CI/CD
+run-name: ${{ github.actor }} run 🚀
+on: [push]
+
+jobs:
+  build-android:
+    name: Build Android Flutter App
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.2'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Lint code
+        run: flutter analyze
+
+      - name: Build Android APK
+        run: flutter build apk --release
