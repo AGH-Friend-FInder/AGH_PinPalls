@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../provider.dart';
+import '../auth/auth.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -17,8 +18,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
-  String? _errorMessage = null;
-
   bool _isLoading = false; // To manage the loading state
 
   @override
@@ -32,15 +31,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: [
               Image.asset('assets/PinPals_nb.png', height: 150),
               const Text("Fill in the registration form to get started!"),
-
-              if (_errorMessage != null)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0),
-                  child: Text(
-                    _errorMessage!,
-                    style: const TextStyle(color: Colors.red),
-                  ),
-                ),
 
               Form(
                 key: _formKey,
@@ -152,13 +142,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     setState(() {
       _isLoading = true;
-      _errorMessage = null;
     });
+
+    // Hash the password before sending it
+    String hashedPassword = hashPassword(_passwordController.text);
 
     Map<String, dynamic> userData = {
       'username': _nameController.text,
       'email': _emailController.text,
-      'password': _passwordController.text,
+      'password': hashedPassword,
     };
 
     try {
@@ -172,9 +164,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
     } catch (e) {
       if (mounted) {
-        setState(() {
-          _errorMessage = e.toString();
-        });
+        showDialog(
+          context: context,
+          builder:
+              (context) => AlertDialog(
+                title: const Text('Error'),
+                content: Text('$e'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('OK'),
+                  ),
+                ],
+              ),
+        );
       }
     } finally {
       if (mounted) {
@@ -184,5 +187,4 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
     }
   }
-
 }

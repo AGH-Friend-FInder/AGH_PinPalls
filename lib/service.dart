@@ -29,7 +29,7 @@ class Service {
       body: json.encode(user),
     );
     if (response.statusCode != 200) {
-      throw Exception('Failed to create user');
+      throw Exception(response.body);
     }
   }
 
@@ -38,7 +38,28 @@ class Service {
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
-      throw Exception('Failed to load group');
+      throw Exception(response.body);
+    }
+  }
+
+  Future<Map<String, dynamic>> loginUser(
+    String emailOrUsername,
+    String password,
+  ) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/users/login'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({
+        'email': emailOrUsername.contains('@') ? emailOrUsername : null,
+        'username': emailOrUsername.contains('@') ? null : emailOrUsername,
+        'password': password,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception(response.body);
     }
   }
 }
