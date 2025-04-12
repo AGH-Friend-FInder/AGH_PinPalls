@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MapMenuBar extends StatelessWidget {
-  const MapMenuBar({
-    super.key,
-    this.child,
-  });
+  const MapMenuBar({super.key, this.child});
 
   final Widget? child;
 
@@ -14,14 +11,14 @@ class MapMenuBar extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Map Screen'),
         leading: Builder(
-            builder:
-                (context) => IconButton(
-                  icon: const Icon(Icons.menu),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            ),
-          ),
+          builder:
+              (context) => IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+              ),
+        ),
       ),
       drawer: Drawer(
         child: ListView(
@@ -44,18 +41,18 @@ class MapMenuBar extends StatelessWidget {
             // const ListTile(leading: Icon(Icons.event), title: Text('Wydarzenia')),
             const ListTile(leading: Icon(Icons.group), title: Text('Grupy')),
             ListTile(
-                leading: const Icon(Icons.logout),
-                title: const Text('Wyloguj się'),
-                onTap: () {
-                  //TODO: add token reset
-                  Navigator.pushNamed(context, '/login');
-                },
+              leading: const Icon(Icons.logout),
+              title: const Text('Wyloguj się'),
+              onTap: () {
+                //TODO: add token reset
+                Navigator.pushNamed(context, '/login');
+              },
             ),
           ],
         ),
       ),
 
-      body: child
+      body: child,
     );
   }
 }

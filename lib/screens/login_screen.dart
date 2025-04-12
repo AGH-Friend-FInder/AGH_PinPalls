@@ -61,8 +61,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           SizedBox(
                             child: ElevatedButton(
-                              onPressed: () {},
-                              child: Text("Sign in"),
+                              onPressed: () {
+                                //TODO: login mockup, add backend call
+                                Navigator.pushNamed(context, '/map');
+                              },
+                              child: Text("Zaloguj się"),
                             ),
                           ),
                           const SizedBox(width: 20),
@@ -77,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 );
                               },
-                              child: Text("Register"),
+                              child: Text("Zarejestruj się"),
                             ),
                           ),
                         ],
