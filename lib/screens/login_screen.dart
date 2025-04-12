@@ -65,22 +65,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                 //TODO: login mockup, add backend call
                                 Navigator.pushNamed(context, '/map');
                               },
-                              child: Text("Zaloguj się"),
+                              child: Text("Sign in"),
                             ),
                           ),
                           const SizedBox(width: 20),
                           SizedBox(
                             child: OutlinedButton(
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (context) => const RegisterScreen(),
-                                  ),
-                                );
+                                Navigator.pushNamed(context, '/register');
                               },
-                              child: Text("Zarejestruj się"),
+                              child: Text("Register"),
                             ),
                           ),
                         ],

@@ -33,16 +33,22 @@ class MapMenuBar extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.person),
-              title: const Text('Profil'),
+              title: const Text('Profile'),
               onTap: () {
-                Navigator.pushNamed(context, '/settings');
+                Navigator.pushNamed(context, '/profile');
               },
             ),
             // const ListTile(leading: Icon(Icons.event), title: Text('Wydarzenia')),
-            const ListTile(leading: Icon(Icons.group), title: Text('Grupy')),
+            ListTile(
+              leading: const Icon(Icons.group),
+              title: const Text('Groups'),
+              onTap: () {
+                Navigator.pushNamed(context, '/groups');
+              },
+            ),
             ListTile(
               leading: const Icon(Icons.logout),
-              title: const Text('Wyloguj się'),
+              title: const Text('Log out'),
               onTap: () {
                 //TODO: add token reset
                 Navigator.pushNamed(context, '/login');

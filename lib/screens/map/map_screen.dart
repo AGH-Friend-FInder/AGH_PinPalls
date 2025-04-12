@@ -95,78 +95,98 @@ class _MapScreenState extends State<MapScreen> {
         showModalBottomSheet(
           context: context,
           builder: (BuildContext context) {
-            return SizedBox(
-              height: 300,
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    // Row(
-                    //   crossAxisAlignment: CrossAxisAlignment.center,
-                    //   children: [
-                    //     Text('${geoPoint.latitude}'),
-                    //     Text('${geoPoint.longitude}')
-                    //   ],),
-                    Row(
+            return StatefulBuilder(
+              builder: (
+                BuildContext context,
+                StateSetter setState /*You can rename this!*/,
+              ) {
+                return SizedBox(
+                  height: 300,
+                  child: Center(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Przycisk zmniejszania
-                        IconButton(
-                          icon: const Icon(Icons.remove),
-                          onPressed: _decrement,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        // Row(
+                        //   crossAxisAlignment: CrossAxisAlignment.center,
+                        //   children: [
+                        //     Text('${geoPoint.latitude}'),
+                        //     Text('${geoPoint.longitude}')
+                        //   ],),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Przycisk zmniejszania
+                            IconButton(
+                              icon: const Icon(Icons.remove),
+                              onPressed: () {
+                                setState(() {
+                                  _decrement();
+                                });
+                              },
+                            ),
+                            // Odstęp między przyciskami
+                            const SizedBox(width: 20),
+                            // Wyświetlanie aktualnego stanu licznika
+                            Text(
+                              '$_counter',
+                              style: const TextStyle(fontSize: 24),
+                            ),
+                            const SizedBox(width: 20),
+                            // Przycisk zwiększania
+                            IconButton(
+                              icon: const Icon(Icons.add),
+                              onPressed: () {
+                                setState(() {
+                                  _increment();
+                                });
+                              },
+                            ),
+                          ],
                         ),
-                        // Odstęp między przyciskami
-                        const SizedBox(width: 20),
-                        // Wyświetlanie aktualnego stanu licznika
-                        Text('$_counter', style: const TextStyle(fontSize: 24)),
-                        const SizedBox(width: 20),
-                        // Przycisk zwiększania
-                        IconButton(
-                          icon: const Icon(Icons.add),
-                          onPressed: _increment,
+                        Wrap(
+                          spacing: 8.0,
+                          runSpacing: 4.0,
+                          children:
+                              _tags.map((tag) {
+                                // Sprawdzamy czy tag jest zaznaczony
+                                final isSelected = _selectedTags.contains(tag);
+
+                                return ChoiceChip(
+                                  label: Text(tag),
+                                  selected: isSelected,
+                                  onSelected: (bool value) {
+                                    setState(() {
+                                      if (value) {
+                                        // Dodajemy tag do zaznaczonych
+                                        _selectedTags.add(tag);
+                                      } else {
+                                        // Usuwamy tag z zaznaczonych
+                                        _selectedTags.remove(tag);
+                                      }
+                                    });
+                                  },
+                                  // Możesz dostosować wygląd:
+                                  selectedColor: Colors.blue.shade300,
+                                  disabledColor: Colors.grey.shade200,
+                                  labelStyle: TextStyle(
+                                    color:
+                                        isSelected
+                                            ? Colors.white
+                                            : Colors.black87,
+                                  ),
+                                );
+                              }).toList(),
+                        ),
+                        ElevatedButton(
+                          child: const Text('Submit'),
+                          onPressed: () => Navigator.pop(context),
                         ),
                       ],
                     ),
-                    Wrap(
-                      spacing: 8.0,
-                      runSpacing: 4.0,
-                      children:
-                          _tags.map((tag) {
-                            // Sprawdzamy czy tag jest zaznaczony
-                            final isSelected = _selectedTags.contains(tag);
-
-                            return ChoiceChip(
-                              label: Text(tag),
-                              selected: isSelected,
-                              onSelected: (bool value) {
-                                setState(() {
-                                  if (value) {
-                                    // Dodajemy tag do zaznaczonych
-                                    _selectedTags.add(tag);
-                                  } else {
-                                    // Usuwamy tag z zaznaczonych
-                                    _selectedTags.remove(tag);
-                                  }
-                                });
-                              },
-                              // Możesz dostosować wygląd:
-                              selectedColor: Colors.blue.shade300,
-                              disabledColor: Colors.grey.shade200,
-                              labelStyle: TextStyle(
-                                color:
-                                    isSelected ? Colors.white : Colors.black87,
-                              ),
-                            );
-                          }).toList(),
-                    ),
-                    ElevatedButton(
-                      child: const Text('Zatwierdź'),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             );
           },
         );
