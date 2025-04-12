@@ -5,10 +5,7 @@ TextStyle mainStyle = TextStyle(
   fontSize: 17,
   color: Color(0xff175432),
 );
-TextStyle secStyle = TextStyle(
-  fontSize: 13,
-  color: Colors.black,
-);
+TextStyle secStyle = TextStyle(fontSize: 13, color: Colors.black);
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -47,18 +44,14 @@ class ProfileScreen extends StatelessWidget {
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Text(
-                      "Group ${index + 1}",
-                      style: secStyle,
-                    ),
+                    child: Text("Group ${index + 1}", style: secStyle),
                   );
                 }),
               ),
               const SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {
-                  },
+                  onPressed: () {},
                   child: Text("Edit Groups"),
                 ),
               ),
