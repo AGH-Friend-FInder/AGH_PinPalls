@@ -19,7 +19,7 @@ jobs:
         run: flutter pub get
 
       - name: Format code
-        run: flutter format --set-exit-if-changed .
+        run: dart format --set-exit-if-changed .
 
       - name: Lint code
         run: flutter analyze
@@ -42,7 +42,7 @@ jobs:
         run: flutter pub get
 
       - name: Format code
-        run: flutter format --set-exit-if-changed .
+        run: dart format --set-exit-if-changed .
 
       - name: Lint code
         run: flutter analyze
