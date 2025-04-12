@@ -1,5 +1,5 @@
-# AGH-PinPals
-Aplikacja mobilna **AGH-PinPals** jest idealną aplikacją mobilną dla studentów szukających przyjaciół na Kampusie AGH!
+# AGH PinPals
+Aplikacja mobilna **AGH PinPals** jest idealną aplikacją mobilną dla studentów szukających przyjaciół na Kampusie AGH!
 
 ### Znajdź znajomych na MS AGH
 
