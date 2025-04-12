@@ -21,7 +21,7 @@ class PinPalsApp extends StatelessWidget {
       // Zawsze startuje od ekranu logowania
       initialRoute: '/login',
       routes: {
-        '/login': (context) => const LoginScreen(),
+        '/login': (context) => LoginScreen(),
         '/map': (context) => const MapScreen(),
         '/settings': (context) => const SettingsScreen(),
         '/groups': (context) => const GroupsScreen()
