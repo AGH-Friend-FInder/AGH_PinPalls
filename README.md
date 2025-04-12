@@ -1,16 +1,28 @@
-# agh_pin_palls
+# AGH-PinPals
+Aplikacja mobilna **AGH-PinPals** jest idealną aplikacją mobilną dla studentów szukających przyjaciół na Kampusie AGH!
 
-Student finder on MS AGH
+### Znajdź znajomych na MS AGH
 
-## Getting Started
+Nasza aplikacja udostępnia użytkownikom mapę Miasteczka Studenckiego, na której mogą umieszczać pinezki ze swoją lokalizacją, co znacząco ułatwi znalezienie ich na miasteczku. W pinezce można znaleźć informacje o:
 
-This project is a starting point for a Flutter application.
+- czasie dodania pinezki,
+- ilości osób, które są obecnie w danej lokalizacji,
+- osobie, która dodała pinezkę.
 
-A few resources to get you started if this is your first Flutter project:
+Pinezki można filtrować na podstawie różnych tagów, które można dodać w trakcie jej dodawania. Dodatkowo oferujemy też możliwość dodania prywatnych pinezek, widocznych tylko dla konkretnych grup użytkowników.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Najważniejsze wydarzenia na Kampusie AGH
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+W AGH-PinPals dostępna jest również mapa Kampusu AGH z zaznaczonymi aktualnie odbywającymi się wydarzeniami. Pozwala ona użytkownikom znaleźć ciekawe eventy w okolicy, jak i również aktualnie trwające promocje w lokalach gastronomicznych.
+
+Oprócz tego, w AGH-PinPalls znajduje się też lista odbywających się w najbliższym czasie wydarzeń, która pozwoli użytkownikom na planowanie przyszłych wypadów.
+
+### Informacje techniczne
+
+W aplikacji wykorzytano technologie:
+
+- Flutter
+- SQLite
+- Keycloak
+
+Aplikacja AGH-PinPals jest kompatybilna z systemami **Android** i **IOS**.
