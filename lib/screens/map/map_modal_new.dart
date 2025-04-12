@@ -28,6 +28,7 @@ Future<bool> showMapBottomModal(
   final result = await showModalBottomSheet(
     context: context,
     isScrollControlled: true,
+    backgroundColor: Colors.transparent,
     builder: (BuildContext context) {
       return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
@@ -49,13 +50,13 @@ class ModalContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
+      snap: true,
       expand: false,
       initialChildSize: 0.3,
-      minChildSize: 0.2,
+      minChildSize: 0.3,
       maxChildSize: 0.8,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
-          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
@@ -69,38 +70,34 @@ class ModalContent extends StatelessWidget {
           child: SingleChildScrollView(
             controller: scrollController,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              mainAxisSize: MainAxisSize.max,
-              // mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  width: 40,
-                  height: 4,
-                  margin: const EdgeInsets.only(bottom: 12),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[400],
-                    borderRadius: BorderRadius.circular(2),
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    margin: const EdgeInsets.symmetric(vertical: 12),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[400],
+                      borderRadius: BorderRadius.circular(2),
+                    ),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
+                Center(child: _PeopleCounter(tagState: tagState)),
+                Center(
+                  child: SizedBox(
+                    height: 100,
+                    child: SingleChildScrollView(
+                      controller: scrollController,
+                      child: _TagSelector(tagState: tagState),
+                    ),
                   ),
-                  width: 200,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black, width: 1.4),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: _PeopleCounter(tagState: tagState),
                 ),
-
-                _TagSelector(tagState: tagState),
+                // const SizedBox(height: 12),
                 ElevatedButton(
                   child: const Text('Submit'),
                   onPressed: () => Navigator.pop(context, true),
                 ),
+                // const Divider(),
               ],
             ),
           ),
@@ -109,47 +106,6 @@ class ModalContent extends StatelessWidget {
     );
   }
 }
-
-//   SizedBox(
-//   height: 300,
-//   child: Center(
-//     child: Column(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       mainAxisSize: MainAxisSize.min,
-//       children: <Widget>[
-//         Container(
-//           width: 40,
-//           height: 4,
-//           margin: const EdgeInsets.only(bottom: 12),
-//           decoration: BoxDecoration(
-//             color: Colors.grey[400],
-//             borderRadius: BorderRadius.circular(2),
-//           ),
-//         ),
-//         Container(
-//           padding: const EdgeInsets.symmetric(
-//             horizontal: 16,
-//             vertical: 8,
-//           ),
-//           width: 200,
-//           height: 50,
-//           decoration: BoxDecoration(
-//             border: Border.all(color: Colors.black, width: 1.4),
-//             borderRadius: BorderRadius.circular(30),
-//           ),
-//           child: _PeopleCounter(tagState: tagState),
-//         ),
-//         _TagSelector(tagState: tagState),
-//         ElevatedButton(
-//           child: const Text('Submit'),
-//           onPressed: () => Navigator.pop(context, true),
-//         ),
-//       ],
-//     ),
-//   ),
-// );
-//   }
-// }
 
 class _PeopleCounter extends StatefulWidget {
   const _PeopleCounter({required this.tagState});
@@ -163,35 +119,43 @@ class _PeopleCounter extends StatefulWidget {
 class _PeopleCounterState extends State<_PeopleCounter> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        IconButton(
-          icon: const Icon(Icons.remove),
-          onPressed: () {
-            setState(() {
-              widget.tagState.decrementPeopleCount();
-            });
-          },
-        ),
-        // Odstęp między przyciskami
-        const SizedBox(width: 20),
-        // Wyświetlanie aktualnego stanu licznika
-        Text(
-          '${widget.tagState.peopleCounter}',
-          style: const TextStyle(fontSize: 24),
-        ),
-        const SizedBox(width: 20),
-        // Przycisk zwiększania
-        IconButton(
-          icon: const Icon(Icons.add),
-          onPressed: () {
-            setState(() {
-              widget.tagState.incrementPeopleCount();
-            });
-          },
-        ),
-      ],
+    return Container(
+      width: 200,
+      height: 50,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black, width: 1.8),
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.remove),
+            onPressed: () {
+              setState(() {
+                widget.tagState.decrementPeopleCount();
+              });
+            },
+          ),
+          // Odstęp między przyciskami
+          const SizedBox(width: 20),
+          // Wyświetlanie aktualnego stanu licznika
+          Text(
+            '${widget.tagState.peopleCounter}',
+            style: const TextStyle(fontSize: 24),
+          ),
+          const SizedBox(width: 20),
+          // Przycisk zwiększania
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              setState(() {
+                widget.tagState.incrementPeopleCount();
+              });
+            },
+          ),
+        ],
+      ),
     );
   }
 }
@@ -208,36 +172,34 @@ class _TagSelector extends StatefulWidget {
 class _TagSelectorState extends State<_TagSelector> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Wrap(
-        spacing: 8.0,
-        runSpacing: 4.0,
-        children:
-            _tags.map((tag) {
-              final isSelected = widget.tagState.selectedTags.contains(tag);
+    return Wrap(
+      spacing: 8.0,
+      runSpacing: 4.0,
+      children:
+          _tags.map((tag) {
+            final isSelected = widget.tagState.selectedTags.contains(tag);
 
-              return ChoiceChip(
-                label: Text(tag),
-                selected: isSelected,
-                onSelected: (bool value) {
-                  setState(() {
-                    if (value) {
-                      // Dodajemy tag do zaznaczonych
-                      widget.tagState.selectedTags.add(tag);
-                    } else {
-                      // Usuwamy tag z zaznaczonych
-                      widget.tagState.selectedTags.remove(tag);
-                    }
-                  });
-                },
-                selectedColor: Colors.blue.shade300,
-                disabledColor: Colors.grey.shade200,
-                labelStyle: TextStyle(
-                  color: isSelected ? Colors.white : Colors.black87,
-                ),
-              );
-            }).toList(),
-      ),
+            return ChoiceChip(
+              label: Text(tag),
+              selected: isSelected,
+              onSelected: (bool value) {
+                setState(() {
+                  if (value) {
+                    // Dodajemy tag do zaznaczonych
+                    widget.tagState.selectedTags.add(tag);
+                  } else {
+                    // Usuwamy tag z zaznaczonych
+                    widget.tagState.selectedTags.remove(tag);
+                  }
+                });
+              },
+              selectedColor: Colors.blue.shade300,
+              disabledColor: Colors.grey.shade200,
+              labelStyle: TextStyle(
+                color: isSelected ? Colors.white : Colors.black87,
+              ),
+            );
+          }).toList(),
     );
   }
 }
