@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'service.dart';
 
@@ -23,7 +26,11 @@ class UserProvider with ChangeNotifier {
       await _service.createUser(user);
       notifyListeners();
     } catch (e) {
-      _logger.e('Error creating user: $e'); // Log the error
+      if (e is http.Response && e.statusCode == 400) {
+        throw Exception(json.decode(e.body)['message'] ?? 'Registration error');
+      }
+      _logger.e('Error creating user: $e');
+      throw Exception('Failed to register user');
     }
   }
 }

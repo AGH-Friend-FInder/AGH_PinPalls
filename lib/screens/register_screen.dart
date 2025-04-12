@@ -17,6 +17,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
+  String? _errorMessage = null;
+
   bool _isLoading = false; // To manage the loading state
 
   @override
@@ -30,6 +32,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: [
               Image.asset('assets/PinPals_nb.png', height: 150),
               const Text("Fill in the registration form to get started!"),
+
+              if (_errorMessage != null)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: Text(
+                    _errorMessage!,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ),
 
               Form(
                 key: _formKey,
@@ -134,7 +145,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  // Handle the user registration
   Future<void> _registerUser() async {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -142,6 +152,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     setState(() {
       _isLoading = true;
+      _errorMessage = null;
     });
 
     Map<String, dynamic> userData = {
@@ -161,20 +172,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
     } catch (e) {
       if (mounted) {
-        showDialog(
-          context: context,
-          builder:
-              (context) => AlertDialog(
-                title: const Text('Error'),
-                content: Text('Failed to register: $e'),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('OK'),
-                  ),
-                ],
-              ),
-        );
+        setState(() {
+          _errorMessage = e.toString();
+        });
       }
     } finally {
       if (mounted) {
@@ -184,4 +184,5 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
     }
   }
+
 }
