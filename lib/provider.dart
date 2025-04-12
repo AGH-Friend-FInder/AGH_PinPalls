@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
+import 'package:logger/logger.dart';
 import 'service.dart';
 
 class UserProvider with ChangeNotifier {
   final Service _service = Service();
+  final Logger _logger = Logger(); // Create a logger instance
   Map<String, dynamic> _user = {};
 
   Map<String, dynamic> get user => _user;
@@ -12,7 +14,7 @@ class UserProvider with ChangeNotifier {
       _user = await _service.getUserById(id);
       notifyListeners();
     } catch (e) {
-      print('Error fetching user: $e');
+      _logger.e('Error fetching user: $e'); // Log the error
     }
   }
 
@@ -21,13 +23,14 @@ class UserProvider with ChangeNotifier {
       await _service.createUser(user);
       notifyListeners();
     } catch (e) {
-      print('Error creating user: $e');
+      _logger.e('Error creating user: $e'); // Log the error
     }
   }
 }
 
 class GroupProvider with ChangeNotifier {
   final Service _service = Service();
+  final Logger _logger = Logger(); // Create a logger instance
   List<Map<String, dynamic>> _groups = [];
 
   List<Map<String, dynamic>> get groups => _groups;
@@ -37,7 +40,7 @@ class GroupProvider with ChangeNotifier {
       _groups = await _service.getPublicGroups();
       notifyListeners();
     } catch (e) {
-      print('Error fetching groups: $e');
+      _logger.e('Error fetching groups: $e'); // Log the error
     }
   }
 
@@ -47,7 +50,7 @@ class GroupProvider with ChangeNotifier {
       _groups = [group];
       notifyListeners();
     } catch (e) {
-      print('Error fetching group: $e');
+      _logger.e('Error fetching group: $e'); // Log the error
     }
   }
 }
