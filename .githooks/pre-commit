@@ -1,0 +1,17 @@
+#!/bin/sh
+
+echo "🔍 Formatting Dart code..."
+dart format --set-exit-if-changed .
+FORMAT_EXIT=$?
+
+echo "🧹 Analyzing Flutter code..."
+flutter analyze
+ANALYZE_EXIT=$?
+
+if [ $FORMAT_EXIT -ne 0 ] || [ $ANALYZE_EXIT -ne 0 ]; then
+  echo "❌ Commit aborted due to formatting or linting issues."
+  exit 1
+fi
+
+echo "✅ All checks passed!"
+exit 0
