@@ -11,7 +11,6 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  SampleItem? _selectedMenu;
   final MapController _controller = MapController(
     initPosition: GeoPoint(latitude: 50.068771, longitude: 19.905344),
     areaLimit: BoundingBox(
