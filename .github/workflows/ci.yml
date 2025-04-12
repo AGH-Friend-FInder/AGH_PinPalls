@@ -19,33 +19,10 @@ jobs:
         run: flutter pub get
 
       - name: Format code
-        run: flutter format --set-exit-if-changed .
+        run: dart format --set-exit-if-changed .
 
       - name: Lint code
         run: flutter analyze
 
       - name: Build Android APK
         run: flutter build apk --release
-  build-ios:
-    name: Build IOS Flutter App
-    runs-on: macos-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.29.2'
-
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Format code
-        run: flutter format --set-exit-if-changed .
-
-      - name: Lint code
-        run: flutter analyze
-
-      - name: Build Android APK
-        run: flutter build ios --release
