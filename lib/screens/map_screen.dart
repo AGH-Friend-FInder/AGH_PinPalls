@@ -41,7 +41,38 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Map Screen')),
+      appBar: AppBar(
+        title: const Text('Map Screen'),
+        actions: [
+          Builder(
+            builder:
+                (context) => IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    Scaffold.of(context).openEndDrawer();
+                  },
+                ),
+          ),
+        ],
+      ),
+      endDrawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: const [
+            DrawerHeader(
+              decoration: BoxDecoration(color: Colors.green),
+              child: Text(
+                'Menu',
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+            ),
+            ListTile(leading: Icon(Icons.map), title: Text('Mapa')),
+            ListTile(leading: Icon(Icons.event), title: Text('Wydarzenia')),
+            ListTile(leading: Icon(Icons.group), title: Text('Znajomi')),
+            ListTile(leading: Icon(Icons.logout), title: Text('Wyloguj się')),
+          ],
+        ),
+      ),
       body: OSMFlutter(
         controller: _controller,
         osmOption: OSMOption(
