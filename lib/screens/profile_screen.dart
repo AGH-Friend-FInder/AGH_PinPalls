@@ -18,10 +18,10 @@ class ProfileScreen extends StatelessWidget {
     final groupProvider = Provider.of<GroupProvider>(context);
 
     userProvider.fetchUserById();
-    groupProvider.fetchMyGroups(userProvider.user2?.id);
+    groupProvider.fetchGroupsFromUserId(userProvider.user?.id);
 
-    final user = userProvider.user2;
-    final groups = groupProvider.mygroups;
+    final user = userProvider.user;
+    final groups = groupProvider.userGroups;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Profile')),
@@ -64,7 +64,7 @@ class ProfileScreen extends StatelessWidget {
                               color: Colors.grey[200],
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Text(group['groupName'], style: secStyle),
+                            child: Text(group.groupName, style: secStyle),
                           );
                         }).toList()
                         : [Text("No groups joined yet", style: secStyle)],
