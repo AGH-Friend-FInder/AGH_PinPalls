@@ -24,8 +24,8 @@ class Group {
     return {
       'id': id,
       'color': color,
-      'group_name': groupName,
-      'is_public': isPublic,
+      'groupName': groupName,
+      'isPublic': isPublic,
     };
   }
 }
