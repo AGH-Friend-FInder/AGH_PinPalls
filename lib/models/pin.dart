@@ -31,7 +31,7 @@ class Pin {
       pin: json['pin'],
       latitude: json['latitude'],
       longitude: json['longitude'],
-      expireAt: json['expireAt'],
+      expireAtMinutes: json['expireAtMinutes'],
     );
   }
 

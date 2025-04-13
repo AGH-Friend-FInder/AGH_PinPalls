@@ -24,6 +24,8 @@ class MapTagState {
   }
 
   void decrementTimer(int val) {
-    time = time + val;
+    if (time + val > 0) {
+      time = time + val;
+    }
   }
 }

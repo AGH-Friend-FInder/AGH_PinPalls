@@ -9,16 +9,11 @@ void showMarkerInfo(BuildContext context, MapTagState tagState) {
         height: 300,
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
+
+            // mainAxisAlignment: MainAxisAlignment.center,
+            // mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
-                width: 200,
-                height: 50,
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black, width: 1.4),
                   borderRadius: BorderRadius.circular(30),

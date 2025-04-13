@@ -104,7 +104,7 @@ class _MapScreenState extends State<MapScreen> with OSMMixinObserver {
             markersSet.remove(location);
 
             _mapMarkers[location]!.peopleCounter = pin.numberOfPeople;
-            _mapMarkers[location]!.time = 2137;
+            _mapMarkers[location]!.time = pin.expireAtMinutes!;
           } else {
             _mapMarkers[location] = MapTagState(
               position: location,
