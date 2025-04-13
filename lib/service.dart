@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:agh_pin_palls/models/pin.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'models/user.dart';
 import 'models/group.dart';
@@ -36,12 +36,27 @@ class Service {
     }
   }
 
-  Future<void> createUser(Map<String, dynamic> user) async {
+  Future<User> createUser(Map<String, dynamic> user) async {
     final response = await http.post(
       Uri.parse('$baseUrl/users/register'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(user),
     );
+    if (response.statusCode == 200) {
+      return User.fromJson(json.decode(response.body));
+    } else {
+      throw Exception(response.body);
+    }
+  }
+
+  Future<void> createGroup(Map<String, dynamic> user) async {
+    debugPrint(json.encode(user));
+    final response = await http.post(
+      Uri.parse('$baseUrl/groups'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(user),
+    );
+    debugPrint(response.toString());
     if (response.statusCode != 200) {
       throw Exception(response.body);
     }

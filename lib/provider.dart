@@ -27,7 +27,7 @@ class UserProvider with ChangeNotifier {
 
   Future<void> createUser(Map<String, dynamic> user) async {
     try {
-      await _service.createUser(user);
+      _user = await _service.createUser(user);
       notifyListeners();
     } catch (e) {
       _logger.e('Error creating user: $e');
@@ -79,6 +79,20 @@ class GroupProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       _logger.e('Error fetching tags: $e'); // Log the error
+    }
+  }
+
+  Future<void> createGroup(Map<String, dynamic> group) async {
+    try {
+      await _service.createGroup(group);
+      notifyListeners();
+    } catch (e) {
+      _logger.e('Error creating group: $e');
+      if (e is http.Response && e.statusCode == 400) {
+        rethrow;
+      } else {
+        rethrow;
+      }
     }
   }
 

@@ -38,7 +38,7 @@ class PinPalsApp extends StatelessWidget {
         '/map': (context) => MapScreen(),
         '/profile': (context) => const ProfileScreen(),
         '/groups': (context) => const GroupsScreen(),
-        '/groups/create': (context) => const CreateGroupsScreen(),
+        '/groups/create': (context) => CreateGroupScreen(),
         '/register': (context) => RegisterScreen(),
       },
     );
