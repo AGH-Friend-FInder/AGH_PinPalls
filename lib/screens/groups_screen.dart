@@ -79,6 +79,7 @@ class _GroupsScreenState extends State<GroupsScreen> {
                                   _selectedGroups,
                                   user?.id,
                                 );
+                                Navigator.pushNamed(context, '/profile');
                               },
                               child: Text("Join groups"),
                             ),
