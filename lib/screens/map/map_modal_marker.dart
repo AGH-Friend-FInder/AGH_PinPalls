@@ -34,7 +34,7 @@ void showMarkerInfo(BuildContext context, MapTagState tagState) {
                 children:
                     tagState.selectedTags.map((tag) {
                       return Chip(
-                        label: Text(tag),
+                        label: Text(tag.groupName),
                         backgroundColor: Colors.blue.shade300,
                         labelStyle: const TextStyle(color: Colors.white),
                       );

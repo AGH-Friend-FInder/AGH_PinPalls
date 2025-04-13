@@ -32,6 +32,8 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> with OSMMixinObserver {
   final MapTagState _yourMarker = MapTagState();
+  final Map<GeoPoint, MapTagState> _mapMarkers = {};
+
   final MapController _controller = MapController(initPosition: startPosition);
 
   // final List<MapTagState> _othersGroupMarkers = [];
@@ -85,32 +87,59 @@ class _MapScreenState extends State<MapScreen> with OSMMixinObserver {
     _controller.limitAreaMap(areaBox);
 
     Timer.periodic(const Duration(seconds: 10), (timer) async {
-      debugPrint("Fetching visible pins...");
-
       await Provider.of<PinProvider>(context, listen: false).fetchVisiblePins(
         Provider.of<UserProvider>(context, listen: false).user!.id,
       );
 
       if (mounted) {
-        Provider.of<PinProvider>(context, listen: false).pins.forEach((pin) {
-          _controller.addMarker(
-            GeoPoint(latitude: pin.latitude, longitude: pin.longitude),
-            markerIcon: MarkerIcon(
-              icon: const Icon(
-                Icons.people_alt,
-                color: Colors.orange,
-                size: 48,
-              ),
-            ),
+        Set<GeoPoint> markersSet = _mapMarkers.keys.toSet();
+
+        for (var pin in Provider.of<PinProvider>(context, listen: false).pins) {
+          GeoPoint location = GeoPoint(
+            latitude: pin.latitude,
+            longitude: pin.longitude,
           );
-        });
+
+          if (markersSet.contains(location)) {
+            markersSet.remove(location);
+
+            _mapMarkers[location]!.peopleCounter = pin.numberOfPeople;
+            _mapMarkers[location]!.time = 2137;
+          } else {
+            _mapMarkers[location] = MapTagState(
+              position: location,
+              peopleCounter: pin.numberOfPeople,
+              time: 2137,
+            );
+
+            _controller.addMarker(
+              location,
+              markerIcon: MarkerIcon(
+                icon: const Icon(
+                  Icons.people_alt,
+                  color: Colors.orange,
+                  size: 48,
+                ),
+              ),
+            );
+          }
+        }
+
+        for (var location in markersSet) {
+          _controller.removeMarker(location);
+          _mapMarkers.remove(location);
+        }
       }
     });
   }
 
   void onMarkerClicked(GeoPoint geoPoint) async {
-    debugPrint("Clicked on: ${geoPoint.latitude}, ${geoPoint.longitude}");
-    showMarkerInfo(context, _yourMarker);
+    if (geoPoint == _yourMarker.position) {
+      showMarkerInfo(context, _yourMarker);
+      return;
+    } else {
+      showMarkerInfo(context, _mapMarkers[geoPoint]!);
+    }
   }
 
   @override
@@ -125,7 +154,7 @@ class _MapScreenState extends State<MapScreen> with OSMMixinObserver {
       ),
     );
 
-    if (!await showMapBottomModal(context, _yourMarker)) {
+    if (!await showMapBottomModal(context, MapTagState(position: position))) {
       _controller.removeMarker(position);
       return;
     }
