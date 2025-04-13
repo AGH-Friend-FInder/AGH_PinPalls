@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'package:agh_pin_palls/models/pin.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'models/user.dart';
 import 'models/group.dart';
 
 class Service {
-  final String baseUrl = 'http://10.0.2.2:8080';
+  final String baseUrl = 'https://server-production-65c0.up.railway.app';
 
   Future<User> getUserById(int id) async {
     final response = await http.get(Uri.parse('$baseUrl/users/$id'));
@@ -71,7 +72,20 @@ class Service {
       Iterable jsonList = json.decode(response.body);
       return List<Pin>.from(jsonList.map((json) => Pin.fromJson(json)));
     } else {
+      debugPrint('Failed to load visible pins: ${response.body}');
       throw Exception('Failed to load visible pins');
+    }
+  }
+
+  Future<void> postNewPin(Pin pin) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/pin'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(pin.toJson()),
+    );
+    if (response.statusCode != 200) {
+      debugPrint('Failed to create pin: ${response.body}');
+      throw Exception('Failed to create pin');
     }
   }
 

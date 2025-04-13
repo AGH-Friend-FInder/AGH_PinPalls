@@ -1,3 +1,4 @@
+import 'package:agh_pin_palls/models/pin.dart';
 import 'package:agh_pin_palls/screens/map/map_tag.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -109,7 +110,32 @@ class ModalContent extends StatelessWidget {
                 const SizedBox(height: 12),
                 ElevatedButton(
                   child: const Text('Submit'),
-                  onPressed: () => Navigator.pop(context, true),
+                  onPressed:
+                      () => {
+                        Provider.of<PinProvider>(
+                          context,
+                          listen: false,
+                        ).publishPin(
+                          Pin(
+                            numberOfPeople: tagState.peopleCounter,
+                            pin: "placeholder",
+                            latitude: tagState.position!.latitude,
+                            longitude: tagState.position!.longitude,
+                            expireAtMinutes: 20,
+                            hostUserId:
+                                Provider.of<UserProvider>(
+                                  context,
+                                  listen: false,
+                                ).user!.id,
+                            groupsId:
+                                tagState.selectedTags
+                                    .map((tag) => tag.id)
+                                    .toList(),
+                          ),
+                        ),
+
+                        Navigator.pop(context, true),
+                      },
                 ),
 
                 const Divider(),
@@ -327,9 +353,7 @@ class _TagSelectorState extends State<_TagSelector> {
           Provider.of<GroupProvider>(context, listen: false).userGroups.map((
             tag,
           ) {
-            final isSelected = widget.tagState.selectedTags.contains(
-              tag.groupName,
-            );
+            final isSelected = widget.tagState.selectedTags.contains(tag);
 
             return ChoiceChip(
               label: Text(tag.groupName),
@@ -338,10 +362,10 @@ class _TagSelectorState extends State<_TagSelector> {
                 setState(() {
                   if (value) {
                     // Dodajemy tag do zaznaczonych
-                    widget.tagState.selectedTags.add(tag.groupName);
+                    widget.tagState.selectedTags.add(tag);
                   } else {
                     // Usuwamy tag z zaznaczonych
-                    widget.tagState.selectedTags.remove(tag.groupName);
+                    widget.tagState.selectedTags.remove(tag);
                   }
                 });
               },

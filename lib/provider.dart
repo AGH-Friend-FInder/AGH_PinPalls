@@ -102,4 +102,13 @@ class PinProvider with ChangeNotifier {
       _logger.e('Error fetching pins: $e'); // Log the error
     }
   }
+
+  Future<void> publishPin(Pin pin) async {
+    try {
+      await _service.postNewPin(pin);
+      notifyListeners();
+    } catch (e) {
+      _logger.e('Error publishing pin: $e'); // Log the error
+    }
+  }
 }

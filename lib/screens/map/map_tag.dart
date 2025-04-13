@@ -1,10 +1,13 @@
+import 'package:agh_pin_palls/models/group.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 class MapTagState {
   GeoPoint? position;
-  List<String> selectedTags = [];
+  List<Group> selectedTags = [];
   int peopleCounter = 0;
   int time = 30;
+
+  MapTagState({this.position, this.peopleCounter = 0, this.time = 30});
 
   void incrementPeopleCount() {
     peopleCounter++;

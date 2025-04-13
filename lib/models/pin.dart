@@ -1,22 +1,31 @@
 class Pin {
-  final int id;
   final int numberOfPeople;
   final String pin;
   final double latitude;
   final double longitude;
-  final String expireAt;
+
+  final int? id;
+  final int? hostUserId;
+  final String? expireAt;
+  final int? expireAtMinutes;
+  final List<int>? groupsId;
 
   Pin({
-    required this.id,
     required this.numberOfPeople,
     required this.pin,
     required this.latitude,
     required this.longitude,
-    required this.expireAt,
+
+    this.id,
+    this.expireAtMinutes,
+    this.expireAt,
+    this.hostUserId,
+    this.groupsId,
   });
 
   factory Pin.fromJson(Map<String, dynamic> json) {
     return Pin(
+      // hostUserId: json['hostUserId'],
       id: json['id'],
       numberOfPeople: json['numberOfPeople'],
       pin: json['pin'],
@@ -28,12 +37,13 @@ class Pin {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'number_of_people': numberOfPeople,
+      'numberOfPeople': numberOfPeople,
       'pin': pin,
       'latitude': latitude,
       'longitude': longitude,
-      'expire_at': expireAt,
+      'expireAtMinutes': expireAtMinutes,
+      'hostUserId': hostUserId,
+      'groupsId': groupsId,
     };
   }
 }
