@@ -32,7 +32,8 @@ class PinPalsApp extends StatelessWidget {
       title: 'AGH PinPals',
       theme: ThemeData(primarySwatch: Colors.green),
       // Zawsze startuje od ekranu logowania
-      initialRoute: '/login',
+      // initialRoute: '/login',
+      initialRoute: '/groups',
       routes: {
         '/login': (context) => LoginScreen(),
         '/map': (context) => MapScreen(),
