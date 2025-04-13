@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:agh_pin_palls/groups.dart';
+import 'package:agh_pin_palls/models/pin.dart';
 import 'package:http/http.dart' as http;
 
 class Service {
@@ -13,10 +15,11 @@ class Service {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getPublicGroups() async {
+  Future<List<Group>> getPublicGroups() async {
     final response = await http.get(Uri.parse('$baseUrl/groups/public'));
     if (response.statusCode == 200) {
-      return List<Map<String, dynamic>>.from(json.decode(response.body));
+      Iterable jsonList = json.decode(response.body);
+      return List<Group>.from(jsonList.map((json) => Group.fromJson(json)));
     } else {
       throw Exception('Failed to load public groups');
     }
@@ -39,6 +42,26 @@ class Service {
       return json.decode(response.body);
     } else {
       throw Exception(response.body);
+    }
+  }
+
+  Future<List<Group>> getUserGroups(int userId) async {
+    final response = await http.get(Uri.parse('$baseUrl/users/group/$userId'));
+    if (response.statusCode == 200) {
+      Iterable jsonList = json.decode(response.body);
+      return List<Group>.from(jsonList.map((json) => Group.fromJson(json)));
+    } else {
+      throw Exception(response.body);
+    }
+  }
+
+  Future<List<Pin>> getVisiblePins(int userId) async {
+    final response = await http.get(Uri.parse('$baseUrl/pin/visible/$userId'));
+    if (response.statusCode == 200) {
+      Iterable jsonList = json.decode(response.body);
+      return List<Pin>.from(jsonList.map((json) => Pin.fromJson(json)));
+    } else {
+      throw Exception('Failed to load visible pins');
     }
   }
 

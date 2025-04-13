@@ -12,8 +12,12 @@ import 'screens/register_screen.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => UserProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => PinProvider()),
+        ChangeNotifierProvider(create: (context) => GroupProvider()),
+      ],
       child: const PinPalsApp(),
     ),
   );

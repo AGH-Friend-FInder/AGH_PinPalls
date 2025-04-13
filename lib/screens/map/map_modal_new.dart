@@ -1,44 +1,57 @@
 import 'package:agh_pin_palls/screens/map/map_tag.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-final List<String> _tags = [
-  "Friends",
-  "Public",
-  "Informatyka",
-  "Coin",
-  "Cyberka",
-  "Algo",
-  "WO",
-  "test1",
-  "test2",
-  "test3",
-  "test4",
-  "test5",
-  "test6",
-  "test7",
-  "test8",
-  "test9",
-  "test0",
-];
+import '../../provider.dart';
+
+// final List<String> _tags = [
+//   "Friends",
+//   "Public",
+//   "Informatyka",
+//   "Coin",
+//   "Cyberka",
+//   "Algo",
+//   "WO",
+//   "test1",
+//   "test2",
+//   "test3",
+//   "test4",
+//   "test5",
+//   "test6",
+//   "test7",
+//   "test8",
+//   "test9",
+//   "test0",
+// ];
 
 Future<bool> showMapBottomModal(
   BuildContext context,
   MapTagState tagState,
 ) async {
-  final result = await showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    backgroundColor: Colors.transparent,
-    builder: (BuildContext context) {
-      return StatefulBuilder(
-        builder: (BuildContext context, StateSetter setState) {
-          return ModalContent(tagState: tagState);
-        },
-      );
-    },
+  await Provider.of<GroupProvider>(
+    context,
+    listen: false,
+  ).fetchGroupsFromUserId(
+    Provider.of<UserProvider>(context, listen: false).user['id'],
   );
 
-  if (result != null) return true;
+  if (context.mounted) {
+    final result = await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return ModalContent(tagState: tagState);
+          },
+        );
+      },
+    );
+
+    if (result != null) return true;
+  }
+
   return false;
 }
 
@@ -83,6 +96,7 @@ class ModalContent extends StatelessWidget {
                   ),
                 ),
                 Center(child: _PeopleCounter(tagState: tagState)),
+                const Divider(),
                 Center(
                   child: SizedBox(
                     height: 100,
@@ -91,13 +105,122 @@ class ModalContent extends StatelessWidget {
                       child: _TagSelector(tagState: tagState),
                     ),
                   ),
-                ),
-                // const SizedBox(height: 12),
+                ), // _TagSelector
+                const SizedBox(height: 12),
                 ElevatedButton(
                   child: const Text('Submit'),
                   onPressed: () => Navigator.pop(context, true),
                 ),
-                // const Divider(),
+
+                const Divider(),
+                Center(
+                  child: Column(
+                    children: [
+                      Text('Timer', style: const TextStyle(fontSize: 24)),
+                      Center(
+                        child: Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.black45,
+                                  width: 1.8,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: TextButton(
+                                onPressed: () {},
+                                child: const Text(
+                                  '-30',
+                                  style: TextStyle(fontSize: 24),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.black45,
+                                  width: 1.8,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: TextButton(
+                                onPressed: () {},
+                                child: const Text(
+                                  '-15',
+                                  style: TextStyle(fontSize: 24),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 100,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.black45,
+                                  width: 1.8,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                'Time',
+                                style: const TextStyle(fontSize: 24),
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.black45,
+                                  width: 1.8,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: TextButton(
+                                onPressed: () {},
+                                child: const Text(
+                                  '+15',
+                                  style: TextStyle(fontSize: 24),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.black45,
+                                  width: 1.8,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: TextButton(
+                                onPressed: () {},
+                                child: const Text(
+                                  '+30',
+                                  style: TextStyle(fontSize: 24),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Row(
+                      //   children: [
+                      //     ElevatedButton(
+                      //         onPressed: () {},
+                      //         child: const Text('-15')
+                      //     ),
+                      //     ElevatedButton(
+                      //         onPressed: () {},
+                      //         child: const Text('+15')
+                      //     ),
+                      //     ElevatedButton(
+                      //         onPressed: () {},
+                      //         child: const Text('+30')
+                      //     ),
+                      //   ],
+                      // )
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -119,42 +242,66 @@ class _PeopleCounter extends StatefulWidget {
 class _PeopleCounterState extends State<_PeopleCounter> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 200,
+    return SizedBox(
+      width: 250,
       height: 50,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black, width: 1.8),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.remove),
-            onPressed: () {
-              setState(() {
-                widget.tagState.decrementPeopleCount();
-              });
-            },
-          ),
-          // Odstęp między przyciskami
-          const SizedBox(width: 20),
-          // Wyświetlanie aktualnego stanu licznika
-          Text(
-            '${widget.tagState.peopleCounter}',
-            style: const TextStyle(fontSize: 24),
-          ),
-          const SizedBox(width: 20),
-          // Przycisk zwiększania
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {
-              setState(() {
-                widget.tagState.incrementPeopleCount();
-              });
-            },
-          ),
-        ],
+      // decoration: BoxDecoration(
+      //   border: Border.all(color: Colors.black, width: 1.8),
+      //   borderRadius: BorderRadius.circular(30),
+      // ),
+      child: Center(
+        child: Row(
+          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black45, width: 1.8),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: IconButton(
+                icon: const Icon(Icons.remove),
+                onPressed: () {
+                  setState(() {
+                    widget.tagState.decrementPeopleCount();
+                  });
+                },
+              ),
+            ),
+            // Odstęp między przyciskami
+            const SizedBox(width: 0),
+            // Wyświetlanie aktualnego stanu licznika
+            Container(
+              height: 50,
+              width: 100,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black45, width: 1.8),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Center(
+                child: Text(
+                  '${widget.tagState.peopleCounter}',
+                  style: const TextStyle(fontSize: 24),
+                ),
+              ),
+            ),
+            const SizedBox(width: 0),
+            // Przycisk zwiększania
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black45, width: 1.8),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: IconButton(
+                icon: const Icon(Icons.add),
+                onPressed: () {
+                  setState(() {
+                    widget.tagState.incrementPeopleCount();
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -164,6 +311,7 @@ class _TagSelector extends StatefulWidget {
   const _TagSelector({required this.tagState});
 
   final MapTagState tagState;
+  //final List<String> _tags = get
 
   @override
   State<_TagSelector> createState() => _TagSelectorState();
@@ -176,20 +324,24 @@ class _TagSelectorState extends State<_TagSelector> {
       spacing: 8.0,
       runSpacing: 4.0,
       children:
-          _tags.map((tag) {
-            final isSelected = widget.tagState.selectedTags.contains(tag);
+          Provider.of<GroupProvider>(context, listen: false).userGroups.map((
+            tag,
+          ) {
+            final isSelected = widget.tagState.selectedTags.contains(
+              tag.groupName,
+            );
 
             return ChoiceChip(
-              label: Text(tag),
+              label: Text(tag.groupName),
               selected: isSelected,
               onSelected: (bool value) {
                 setState(() {
                   if (value) {
                     // Dodajemy tag do zaznaczonych
-                    widget.tagState.selectedTags.add(tag);
+                    widget.tagState.selectedTags.add(tag.groupName);
                   } else {
                     // Usuwamy tag z zaznaczonych
-                    widget.tagState.selectedTags.remove(tag);
+                    widget.tagState.selectedTags.remove(tag.groupName);
                   }
                 });
               },
@@ -203,3 +355,19 @@ class _TagSelectorState extends State<_TagSelector> {
     );
   }
 }
+
+// class _Timer extends StatefulWidget {
+//   const _Timer({super.key});
+//
+//
+//
+//   @override
+//   State<_Timer> createState() => _TimerState();
+// }
+//
+// class _TimerState extends State<_Timer> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Placeholder();
+//   }
+// }

@@ -1,9 +1,15 @@
+import 'dart:async';
+
 import 'package:agh_pin_palls/screens/map/map_menu_bar.dart';
 import 'package:agh_pin_palls/screens/map/map_modal_new.dart';
 import 'package:agh_pin_palls/screens/map/map_tag.dart';
 import 'package:agh_pin_palls/screens/map/map_modal_marker.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
+import 'package:provider/provider.dart';
+
+import '../../provider.dart';
 
 final GeoPoint startPosition = GeoPoint(
   latitude: 50.068771,
@@ -21,10 +27,10 @@ class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
 
   @override
-  State<MapScreen> createState() => MapScreenState();
+  State<MapScreen> createState() => _MapScreenState();
 }
 
-class MapScreenState extends State<MapScreen> with OSMMixinObserver {
+class _MapScreenState extends State<MapScreen> with OSMMixinObserver {
   final MapTagState _yourMarker = MapTagState();
   final MapController _controller = MapController(initPosition: startPosition);
 
@@ -38,9 +44,6 @@ class MapScreenState extends State<MapScreen> with OSMMixinObserver {
     await _controller.currentLocation();
     GeoPoint? currentLocation = await _controller.myLocation();
 
-    debugPrint(
-      "Current location: ${currentLocation.latitude}, ${currentLocation.longitude}",
-    );
     onSingleTap(currentLocation);
   }
 
@@ -81,12 +84,28 @@ class MapScreenState extends State<MapScreen> with OSMMixinObserver {
     _controller.rotateMapCamera(-15);
     _controller.limitAreaMap(areaBox);
 
-    // GeoPoint centerPoint = GeoPoint(
-    //   latitude: (areaBox.north + areaBox.south) / 2,
-    //   longitude: (areaBox.east + areaBox.west) / 2,
-    // );
+    Timer.periodic(const Duration(seconds: 10), (timer) async {
+      debugPrint("Fetching visible pins...");
 
-    //_controller.drawRect(RectOSM(key: "abc", centerPoint: centerPoint, distance: 20, color: Colors.red, strokeWidth: 2));
+      await Provider.of<PinProvider>(context, listen: false).fetchVisiblePins(
+        Provider.of<UserProvider>(context, listen: false).user['id'],
+      );
+
+      if (mounted) {
+        Provider.of<PinProvider>(context, listen: false).pins.forEach((pin) {
+          _controller.addMarker(
+            GeoPoint(latitude: pin.latitude, longitude: pin.longitude),
+            markerIcon: MarkerIcon(
+              icon: const Icon(
+                Icons.people_alt,
+                color: Colors.orange,
+                size: 48,
+              ),
+            ),
+          );
+        });
+      }
+    });
   }
 
   void onMarkerClicked(GeoPoint geoPoint) async {
