@@ -106,4 +106,17 @@ class Service {
       throw Exception(response.body);
     }
   }
+
+  Future<void> updateGroups(List<Group> newGroups, int? userId) async {
+    for (final group in newGroups) {
+      int groupId = group.id;
+      final response = await http.post(
+        Uri.parse('$baseUrl/users/$userId/$groupId'),
+        headers: {'Content-Type': 'application/json'},
+      );
+      if (response.statusCode != 200) {
+        throw Exception(response.body);
+      }
+    }
+  }
 }

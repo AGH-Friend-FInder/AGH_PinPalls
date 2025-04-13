@@ -82,6 +82,15 @@ class GroupProvider with ChangeNotifier {
     }
   }
 
+  Future<void> updateUserGroups(List<Group> newGroups, int? userId) async {
+    try {
+      _service.updateGroups(newGroups, userId);
+      notifyListeners();
+    } catch (e) {
+      _logger.e('Error updating tags: $e'); // Log the error
+    }
+  }
+
   // Future<void> fetchGroupById(int id) async {
   //   try {
   //     Map<String, dynamic> group = await _service.getGroupById(id);
