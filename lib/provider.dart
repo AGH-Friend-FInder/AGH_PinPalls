@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'service.dart';
 
@@ -23,7 +24,22 @@ class UserProvider with ChangeNotifier {
       await _service.createUser(user);
       notifyListeners();
     } catch (e) {
-      _logger.e('Error creating user: $e'); // Log the error
+      _logger.e('Error creating user: $e');
+      if (e is http.Response && e.statusCode == 400) {
+        rethrow;
+      } else {
+        rethrow;
+      }
+    }
+  }
+
+  Future<void> loginUser(String emailOrUsername, String password) async {
+    try {
+      _user = await _service.loginUser(emailOrUsername, password);
+      notifyListeners();
+    } catch (e) {
+      _logger.e('Error logging in: $e');
+      rethrow;
     }
   }
 }

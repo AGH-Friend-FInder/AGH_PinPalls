@@ -1,13 +1,20 @@
+import 'package:agh_pin_palls/provider.dart';
 import 'package:agh_pin_palls/screens/groups_screen.dart';
 import 'package:agh_pin_palls/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'screens/login_screen.dart';
 import 'screens/map/map_screen.dart';
 import 'screens/register_screen.dart';
 
 void main() {
-  runApp(const PinPalsApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => UserProvider(),
+      child: const PinPalsApp(),
+    ),
+  );
 }
 
 class PinPalsApp extends StatelessWidget {
