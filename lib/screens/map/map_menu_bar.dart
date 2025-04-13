@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
+typedef OnLocationPressed = void Function();
+
 class MapMenuBar extends StatelessWidget {
-  const MapMenuBar({super.key, this.child});
+  const MapMenuBar({super.key, this.child, this.onCurrentLocationPressed});
 
   final Widget? child;
+  final OnLocationPressed? onCurrentLocationPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +22,17 @@ class MapMenuBar extends StatelessWidget {
                 },
               ),
         ),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              if (onCurrentLocationPressed != null) {
+                onCurrentLocationPressed!();
+              }
+            },
+            style: ElevatedButton.styleFrom(shape: CircleBorder()),
+            child: const Icon(Icons.my_location, color: Colors.black),
+          ),
+        ],
       ),
       drawer: Drawer(
         child: ListView(

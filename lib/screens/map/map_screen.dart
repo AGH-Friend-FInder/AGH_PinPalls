@@ -1,203 +1,55 @@
 import 'package:agh_pin_palls/screens/map/map_menu_bar.dart';
+import 'package:agh_pin_palls/screens/map/map_modal_new.dart';
+import 'package:agh_pin_palls/screens/map/map_tag.dart';
+import 'package:agh_pin_palls/screens/map/map_modal_marker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
-enum SampleItem { live, pin }
+final GeoPoint startPosition = GeoPoint(
+  latitude: 50.068771,
+  longitude: 19.905344,
+);
+
+final BoundingBox areaBox = BoundingBox(
+  north: 50.06954,
+  east: 19.92448,
+  south: 50.06326,
+  west: 19.90174,
+);
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
 
   @override
-  State<MapScreen> createState() => _MapScreenState();
+  State<MapScreen> createState() => MapScreenState();
 }
 
-class _YourMarker {
-  final GeoPoint geoPoint;
+class MapScreenState extends State<MapScreen> with OSMMixinObserver {
+  final MapTagState _yourMarker = MapTagState();
+  final MapController _controller = MapController(initPosition: startPosition);
 
-  _YourMarker({required this.geoPoint});
-}
+  // final List<MapTagState> _othersGroupMarkers = [];
 
-class _MapScreenState extends State<MapScreen> {
-  int _counter = 0;
-  _YourMarker? _yourMarker;
+  // void addNewMarker() {
+  //
+  // }
 
-  void _increment() {
-    setState(() {
-      _counter++;
-    });
-  }
+  Future<void> selectCurrentLocation() async {
+    await _controller.currentLocation();
+    GeoPoint? currentLocation = await _controller.myLocation();
 
-  void _decrement() {
-    setState(() {
-      _counter--;
-    });
-  }
-
-  final List<String> _tags = [
-    "Friends",
-    "Public",
-    "Informatyka",
-    "Coin",
-    "Cyberka",
-    "Algo",
-    "WO",
-  ];
-
-  // Lista przechowująca zaznaczone tagi
-  final List<String> _selectedTags = [];
-
-  final MapController _controller = MapController(
-    initPosition: GeoPoint(latitude: 50.068771, longitude: 19.905344),
-    areaLimit: BoundingBox(
-      north: 50.06954,
-      east: 19.92448,
-      south: 50.06326,
-      west: 19.90174,
-    ),
-  );
-
-  _MapScreenState() {
-    _controller.limitAreaMap(
-      BoundingBox(
-        north: 50.06954,
-        east: 19.92448,
-        south: 50.06326,
-        west: 19.90174,
-      ),
+    debugPrint(
+      "Current location: ${currentLocation.latitude}, ${currentLocation.longitude}",
     );
-    _controller.changeTileLayer(
-      tileLayer: CustomTile.publicTransportationOSM(
-        minZoomLevel: 3,
-        maxZoomLevel: 20,
-      ),
-    );
-
-    _controller.listenerMapSingleTapping.addListener(() {
-      if (_controller.listenerMapSingleTapping.value != null) {
-        GeoPoint geoPoint = _controller.listenerMapSingleTapping.value!;
-
-        if (_yourMarker == null) {
-          _controller.addMarker(
-            geoPoint,
-            markerIcon: const MarkerIcon(
-              icon: Icon(Icons.person, color: Colors.red, size: 48),
-            ),
-          );
-        } else {
-          _controller.changeLocationMarker(
-            oldLocation: _yourMarker!.geoPoint,
-            newLocation: geoPoint,
-          );
-        }
-
-        _yourMarker = _YourMarker(geoPoint: geoPoint);
-
-        showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) {
-            return StatefulBuilder(
-              builder: (
-                BuildContext context,
-                StateSetter setState /*You can rename this!*/,
-              ) {
-                return SizedBox(
-                  height: 300,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        // Row(
-                        //   crossAxisAlignment: CrossAxisAlignment.center,
-                        //   children: [
-                        //     Text('${geoPoint.latitude}'),
-                        //     Text('${geoPoint.longitude}')
-                        //   ],),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // Przycisk zmniejszania
-                            IconButton(
-                              icon: const Icon(Icons.remove),
-                              onPressed: () {
-                                setState(() {
-                                  _decrement();
-                                });
-                              },
-                            ),
-                            // Odstęp między przyciskami
-                            const SizedBox(width: 20),
-                            // Wyświetlanie aktualnego stanu licznika
-                            Text(
-                              '$_counter',
-                              style: const TextStyle(fontSize: 24),
-                            ),
-                            const SizedBox(width: 20),
-                            // Przycisk zwiększania
-                            IconButton(
-                              icon: const Icon(Icons.add),
-                              onPressed: () {
-                                setState(() {
-                                  _increment();
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                        Wrap(
-                          spacing: 8.0,
-                          runSpacing: 4.0,
-                          children:
-                              _tags.map((tag) {
-                                // Sprawdzamy czy tag jest zaznaczony
-                                final isSelected = _selectedTags.contains(tag);
-
-                                return ChoiceChip(
-                                  label: Text(tag),
-                                  selected: isSelected,
-                                  onSelected: (bool value) {
-                                    setState(() {
-                                      if (value) {
-                                        // Dodajemy tag do zaznaczonych
-                                        _selectedTags.add(tag);
-                                      } else {
-                                        // Usuwamy tag z zaznaczonych
-                                        _selectedTags.remove(tag);
-                                      }
-                                    });
-                                  },
-                                  // Możesz dostosować wygląd:
-                                  selectedColor: Colors.blue.shade300,
-                                  disabledColor: Colors.grey.shade200,
-                                  labelStyle: TextStyle(
-                                    color:
-                                        isSelected
-                                            ? Colors.white
-                                            : Colors.black87,
-                                  ),
-                                );
-                              }).toList(),
-                        ),
-                        ElevatedButton(
-                          child: const Text('Submit'),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            );
-          },
-        );
-      }
-    });
+    onSingleTap(currentLocation);
   }
 
   @override
   Widget build(BuildContext context) {
     return MapMenuBar(
+      onCurrentLocationPressed: selectCurrentLocation,
       child: OSMFlutter(
+        onGeoPointClicked: onMarkerClicked,
         controller: _controller,
         osmOption: OSMOption(
           zoomOption: const ZoomOption(
@@ -206,12 +58,71 @@ class _MapScreenState extends State<MapScreen> {
             maxZoomLevel: 19,
           ),
           enableRotationByGesture: true,
-          showDefaultInfoWindow: true,
-          // userTrackingOption: UserTrackingOption(
-          //     enableTracking: true
-          // )
+          // showDefaultInfoWindow: true,
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addObserver(this);
+    _controller.changeTileLayer(
+      tileLayer: CustomTile.publicTransportationOSM(
+        minZoomLevel: 3,
+        maxZoomLevel: 20,
+      ),
+    );
+  }
+
+  @override
+  Future<void> mapIsReady(bool isReady) async {
+    _controller.rotateMapCamera(-15);
+    _controller.limitAreaMap(areaBox);
+
+    // GeoPoint centerPoint = GeoPoint(
+    //   latitude: (areaBox.north + areaBox.south) / 2,
+    //   longitude: (areaBox.east + areaBox.west) / 2,
+    // );
+
+    //_controller.drawRect(RectOSM(key: "abc", centerPoint: centerPoint, distance: 20, color: Colors.red, strokeWidth: 2));
+  }
+
+  void onMarkerClicked(GeoPoint geoPoint) async {
+    debugPrint("Clicked on: ${geoPoint.latitude}, ${geoPoint.longitude}");
+    showMarkerInfo(context, _yourMarker);
+  }
+
+  @override
+  void onSingleTap(GeoPoint position) async {
+    super.onSingleTap(position);
+    if (!areaBox.inBoundingBox(position)) return;
+
+    _controller.addMarker(
+      position,
+      markerIcon: const MarkerIcon(
+        icon: Icon(Icons.location_on, color: Colors.blue, size: 48),
+      ),
+    );
+
+    if (!await showMapBottomModal(context, _yourMarker)) {
+      _controller.removeMarker(position);
+      return;
+    }
+
+    _controller.changeLocationMarker(
+      oldLocation: position,
+      newLocation: position,
+      markerIcon: const MarkerIcon(
+        icon: Icon(Icons.person, color: Colors.red, size: 48),
+      ),
+    );
+
+    if (_yourMarker.position != null) {
+      _controller.removeMarker(_yourMarker.position!);
+    }
+
+    _yourMarker.position = position;
   }
 }

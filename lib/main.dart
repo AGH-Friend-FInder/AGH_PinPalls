@@ -1,6 +1,8 @@
-import 'package:agh_pin_palls/provider.dart';
 import 'package:agh_pin_palls/screens/groups_screen.dart';
+import 'package:agh_pin_palls/screens/create_group_screen.dart';
 import 'package:agh_pin_palls/screens/profile_screen.dart';
+import 'package:agh_pin_palls/provider.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,9 +31,10 @@ class PinPalsApp extends StatelessWidget {
       initialRoute: '/login',
       routes: {
         '/login': (context) => LoginScreen(),
-        '/map': (context) => const MapScreen(),
+        '/map': (context) => MapScreen(),
         '/profile': (context) => const ProfileScreen(),
         '/groups': (context) => const GroupsScreen(),
+        '/groups/create': (context) => const CreateGroupsScreen(),
         '/register': (context) => RegisterScreen(),
       },
     );
