@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../provider.dart';
 
 TextStyle mainStyle = TextStyle(
   fontWeight: FontWeight.bold,
@@ -12,6 +14,15 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    final groupProvider = Provider.of<GroupProvider>(context);
+
+    userProvider.fetchUserById();
+    groupProvider.fetchGroupsFromUserId(userProvider.user?.id);
+
+    final user = userProvider.user;
+    final groups = groupProvider.userGroups;
+
     return Scaffold(
       appBar: AppBar(title: const Text('Profile')),
       body: SingleChildScrollView(
@@ -28,31 +39,42 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text("Name", style: mainStyle),
-              Text("Bartek W", style: secStyle),
+              Text(
+                user?.username ?? 'No username available',
+                style: secStyle,
+              ), // User's name
               const SizedBox(height: 20),
               Text("Email address", style: mainStyle),
-              Text("Email address", style: secStyle),
+              Text(
+                user?.email ?? 'No username available',
+                style: secStyle,
+              ), // User's email
               const SizedBox(height: 20),
               Text("My groups", style: mainStyle),
               const SizedBox(height: 10),
               Wrap(
                 spacing: 10,
                 runSpacing: 10,
-                children: List.generate(4, (index) {
-                  return Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text("Group ${index + 1}", style: secStyle),
-                  );
-                }),
+                children:
+                    groups.isNotEmpty
+                        ? groups.map((group) {
+                          return Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(group.groupName, style: secStyle),
+                          );
+                        }).toList()
+                        : [Text("No groups joined yet", style: secStyle)],
               ),
               const SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/edit-groups');
+                  },
                   child: Text("Edit Groups"),
                 ),
               ),

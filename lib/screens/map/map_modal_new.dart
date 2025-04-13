@@ -32,7 +32,7 @@ Future<bool> showMapBottomModal(
     context,
     listen: false,
   ).fetchGroupsFromUserId(
-    Provider.of<UserProvider>(context, listen: false).user['id'],
+    Provider.of<UserProvider>(context, listen: false).user!.id,
   );
 
   if (context.mounted) {

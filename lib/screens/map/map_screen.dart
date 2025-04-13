@@ -88,7 +88,7 @@ class _MapScreenState extends State<MapScreen> with OSMMixinObserver {
       debugPrint("Fetching visible pins...");
 
       await Provider.of<PinProvider>(context, listen: false).fetchVisiblePins(
-        Provider.of<UserProvider>(context, listen: false).user['id'],
+        Provider.of<UserProvider>(context, listen: false).user!.id,
       );
 
       if (mounted) {

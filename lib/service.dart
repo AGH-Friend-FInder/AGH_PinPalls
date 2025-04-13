@@ -1,15 +1,16 @@
 import 'dart:convert';
-import 'package:agh_pin_palls/groups.dart';
 import 'package:agh_pin_palls/models/pin.dart';
 import 'package:http/http.dart' as http;
+import 'models/user.dart';
+import 'models/group.dart';
 
 class Service {
   final String baseUrl = 'http://10.0.2.2:8080';
 
-  Future<Map<String, dynamic>> getUserById(int id) async {
+  Future<User> getUserById(int id) async {
     final response = await http.get(Uri.parse('$baseUrl/users/$id'));
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      return User.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load user');
     }
@@ -20,6 +21,15 @@ class Service {
     if (response.statusCode == 200) {
       Iterable jsonList = json.decode(response.body);
       return List<Group>.from(jsonList.map((json) => Group.fromJson(json)));
+    } else {
+      throw Exception('Failed to load public groups');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getMyGroups(int id) async {
+    final response = await http.get(Uri.parse('$baseUrl/users/group/$id'));
+    if (response.statusCode == 200) {
+      return List<Map<String, dynamic>>.from(json.decode(response.body));
     } else {
       throw Exception('Failed to load public groups');
     }
@@ -65,10 +75,7 @@ class Service {
     }
   }
 
-  Future<Map<String, dynamic>> loginUser(
-    String emailOrUsername,
-    String password,
-  ) async {
+  Future<User> loginUser(String emailOrUsername, String password) async {
     final response = await http.post(
       Uri.parse('$baseUrl/users/login'),
       headers: {'Content-Type': 'application/json'},
@@ -80,7 +87,7 @@ class Service {
     );
 
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      return User.fromJson(json.decode(response.body));
     } else {
       throw Exception(response.body);
     }

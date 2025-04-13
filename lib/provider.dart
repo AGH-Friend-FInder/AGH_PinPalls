@@ -1,20 +1,21 @@
-import 'package:agh_pin_palls/groups.dart';
 import 'package:agh_pin_palls/models/pin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'service.dart';
+import 'models/user.dart';
+import 'models/group.dart';
 
 class UserProvider with ChangeNotifier {
   final Service _service = Service();
   final Logger _logger = Logger(); // Create a logger instance
-  Map<String, dynamic> _user = {};
+  User? _user;
 
-  Map<String, dynamic> get user => _user;
+  User? get user => _user;
 
-  Future<void> fetchUserById(int id) async {
+  Future<void> fetchUserById() async {
     try {
-      _user = await _service.getUserById(id);
+      _user = await _service.getUserById(_user!.id);
       notifyListeners();
     } catch (e) {
       _logger.e('Error fetching user: $e'); // Log the error
@@ -64,9 +65,11 @@ class GroupProvider with ChangeNotifier {
     }
   }
 
-  Future<void> fetchGroupsFromUserId(int userId) async {
+  Future<void> fetchGroupsFromUserId(int? userId) async {
     try {
-      _userGroups = await _service.getUserGroups(userId);
+      if (userId != null) {
+        _userGroups = await _service.getUserGroups(userId);
+      }
       notifyListeners();
     } catch (e) {
       _logger.e('Error fetching tags: $e'); // Log the error
