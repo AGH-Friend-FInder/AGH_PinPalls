@@ -73,7 +73,7 @@ class ProfileScreen extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/edit-groups');
+                    Navigator.pushNamed(context, '/groups');
                   },
                   child: Text("Edit Groups"),
                 ),
