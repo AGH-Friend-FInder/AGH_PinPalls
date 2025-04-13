@@ -2,14 +2,15 @@ import 'dart:convert';
 import 'package:agh_pin_palls/groups.dart';
 import 'package:agh_pin_palls/models/pin.dart';
 import 'package:http/http.dart' as http;
+import 'user.dart';
 
 class Service {
   final String baseUrl = 'http://10.0.2.2:8080';
 
-  Future<Map<String, dynamic>> getUserById(int id) async {
+  Future<User> getUserById(int id) async {
     final response = await http.get(Uri.parse('$baseUrl/users/$id'));
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      return User.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load user');
     }
@@ -20,6 +21,15 @@ class Service {
     if (response.statusCode == 200) {
       Iterable jsonList = json.decode(response.body);
       return List<Group>.from(jsonList.map((json) => Group.fromJson(json)));
+    } else {
+      throw Exception('Failed to load public groups');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getMyGroups(int id) async {
+    final response = await http.get(Uri.parse('$baseUrl/users/group/$id'));
+    if (response.statusCode == 200) {
+      return List<Map<String, dynamic>>.from(json.decode(response.body));
     } else {
       throw Exception('Failed to load public groups');
     }

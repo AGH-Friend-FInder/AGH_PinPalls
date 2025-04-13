@@ -4,17 +4,20 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'service.dart';
+import 'user.dart';
 
 class UserProvider with ChangeNotifier {
   final Service _service = Service();
   final Logger _logger = Logger(); // Create a logger instance
   Map<String, dynamic> _user = {};
+  User? _user2;
 
   Map<String, dynamic> get user => _user;
+  User? get user2 => _user2;
 
-  Future<void> fetchUserById(int id) async {
+  Future<void> fetchUserById() async {
     try {
-      _user = await _service.getUserById(id);
+      _user2 = await _service.getUserById(user['id'].toInt());
       notifyListeners();
     } catch (e) {
       _logger.e('Error fetching user: $e'); // Log the error
@@ -97,6 +100,18 @@ class PinProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       _logger.e('Error fetching pins: $e'); // Log the error
+    }
+  }
+
+  Future<void> fetchMyGroups(int? id) async {
+    try {
+      if (id != null) {
+        List<Map<String, dynamic>> groups = await _service.getMyGroups(id);
+        _mygroups = groups;
+      }
+      notifyListeners();
+    } catch (e) {
+      _logger.e('Error fetching group: $e'); // Log the error
     }
   }
 }
