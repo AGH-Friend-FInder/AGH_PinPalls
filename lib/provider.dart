@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:agh_pin_palls/models/pin.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
@@ -56,6 +59,9 @@ class GroupProvider with ChangeNotifier {
   List<Group> get userGroups => _userGroups;
   List<Group> get publicGroups => _publicGroups;
 
+  FutureOr<List<Group>> getPublicGroups(String filter, LoadProps? lp) =>
+      _publicGroups;
+
   Future<void> fetchPublicGroups() async {
     try {
       _publicGroups = await _service.getPublicGroups();
@@ -73,6 +79,15 @@ class GroupProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       _logger.e('Error fetching tags: $e'); // Log the error
+    }
+  }
+
+  Future<void> updateUserGroups(List<Group> newGroups, int? userId) async {
+    try {
+      _service.updateGroups(newGroups, userId);
+      notifyListeners();
+    } catch (e) {
+      _logger.e('Error updating tags: $e'); // Log the error
     }
   }
 
