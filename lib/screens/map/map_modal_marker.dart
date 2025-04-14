@@ -5,24 +5,31 @@ void showMarkerInfo(BuildContext context, MapTagState tagState) {
   showModalBottomSheet(
     context: context,
     builder: (BuildContext context) {
-      return SizedBox(
-        height: 300,
+      return Container(
+        height: 400,
+        alignment: Alignment.topCenter,
         child: Center(
           child: Column(
-
-            // mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
             // mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              Text('Number of people', style: const TextStyle(fontSize: 24)),
               Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black, width: 1.4),
-                  borderRadius: BorderRadius.circular(30),
-                ),
+                alignment: Alignment.center,
+                height: 50,
+                width: 50,
+                // decoration: BoxDecoration(
+                //   border: Border.all(color: Colors.black, width: 1.8),
+                //   borderRadius: BorderRadius.circular(10),
+                // ),
                 child: Text(
                   '${tagState.peopleCounter}',
                   style: const TextStyle(fontSize: 24),
                 ),
               ),
+              const Divider(),
+              Text('Tags', style: const TextStyle(fontSize: 24)),
               Wrap(
                 spacing: 8.0,
                 runSpacing: 4.0,
@@ -34,6 +41,12 @@ void showMarkerInfo(BuildContext context, MapTagState tagState) {
                         labelStyle: const TextStyle(color: Colors.white),
                       );
                     }).toList(),
+              ),
+              const Divider(),
+              Text('Time to expire', style: const TextStyle(fontSize: 24)),
+              Text(
+                '${tagState.time} min',
+                style: const TextStyle(fontSize: 24),
               ),
             ],
           ),

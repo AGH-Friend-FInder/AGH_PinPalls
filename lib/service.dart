@@ -6,7 +6,7 @@ import 'models/user.dart';
 import 'models/group.dart';
 
 class Service {
-  final String baseUrl = 'https://server-production-65c0.up.railway.app';
+  final String baseUrl = 'http://10.0.2.2:8080';
 
   Future<User> getUserById(int id) async {
     final response = await http.get(Uri.parse('$baseUrl/users/$id'));

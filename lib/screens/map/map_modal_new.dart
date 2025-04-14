@@ -68,7 +68,7 @@ class ModalContent extends StatelessWidget {
       expand: false,
       initialChildSize: 0.3,
       minChildSize: 0.3,
-      maxChildSize: 0.8,
+      maxChildSize: 0.42,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
           decoration: BoxDecoration(
@@ -121,7 +121,7 @@ class ModalContent extends StatelessWidget {
                             pin: "placeholder",
                             latitude: tagState.position!.latitude,
                             longitude: tagState.position!.longitude,
-                            expireAtMinutes: 20,
+                            expireAtMinutes: tagState.time,
                             hostUserId:
                                 Provider.of<UserProvider>(
                                   context,
@@ -139,114 +139,7 @@ class ModalContent extends StatelessWidget {
                 ),
 
                 const Divider(),
-                Center(
-                  child: Column(
-                    children: [
-                      Text('Timer', style: const TextStyle(fontSize: 24)),
-                      Center(
-                        child: Row(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.black45,
-                                  width: 1.8,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: TextButton(
-                                onPressed: () {},
-                                child: const Text(
-                                  '-30',
-                                  style: TextStyle(fontSize: 24),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.black45,
-                                  width: 1.8,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: TextButton(
-                                onPressed: () {},
-                                child: const Text(
-                                  '-15',
-                                  style: TextStyle(fontSize: 24),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              width: 100,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.black45,
-                                  width: 1.8,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(
-                                'Time',
-                                style: const TextStyle(fontSize: 24),
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.black45,
-                                  width: 1.8,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: TextButton(
-                                onPressed: () {},
-                                child: const Text(
-                                  '+15',
-                                  style: TextStyle(fontSize: 24),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.black45,
-                                  width: 1.8,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: TextButton(
-                                onPressed: () {},
-                                child: const Text(
-                                  '+30',
-                                  style: TextStyle(fontSize: 24),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      // Row(
-                      //   children: [
-                      //     ElevatedButton(
-                      //         onPressed: () {},
-                      //         child: const Text('-15')
-                      //     ),
-                      //     ElevatedButton(
-                      //         onPressed: () {},
-                      //         child: const Text('+15')
-                      //     ),
-                      //     ElevatedButton(
-                      //         onPressed: () {},
-                      //         child: const Text('+30')
-                      //     ),
-                      //   ],
-                      // )
-                    ],
-                  ),
-                ),
+                Center(child: _Timer(tagState: tagState)),
               ],
             ),
           ),
@@ -277,6 +170,7 @@ class _PeopleCounterState extends State<_PeopleCounter> {
       // ),
       child: Center(
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
@@ -380,18 +274,102 @@ class _TagSelectorState extends State<_TagSelector> {
   }
 }
 
-// class _Timer extends StatefulWidget {
-//   const _Timer({super.key});
-//
-//
-//
-//   @override
-//   State<_Timer> createState() => _TimerState();
-// }
-//
-// class _TimerState extends State<_Timer> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Placeholder();
-//   }
-// }
+class _Timer extends StatefulWidget {
+  const _Timer({required this.tagState});
+
+  final MapTagState tagState;
+
+  @override
+  State<_Timer> createState() => _TimerState();
+}
+
+class _TimerState extends State<_Timer> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text('Set custom time', style: const TextStyle(fontSize: 24)),
+        Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black45, width: 1.8),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    setState(() {
+                      widget.tagState.decrementTimer(-30);
+                    });
+                  },
+                  child: const Text('-30', style: TextStyle(fontSize: 20)),
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black45, width: 1.8),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    setState(() {
+                      widget.tagState.decrementTimer(-15);
+                    });
+                  },
+                  child: const Text('-15', style: TextStyle(fontSize: 20)),
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                width: 100,
+                height: 50,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black45, width: 1.8),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  '${widget.tagState.time}',
+                  style: const TextStyle(fontSize: 24),
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black45, width: 1.8),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    setState(() {
+                      widget.tagState.incrementTimer(15);
+                    });
+                  },
+                  child: const Text('+15', style: TextStyle(fontSize: 20)),
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black45, width: 1.8),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    setState(() {
+                      widget.tagState.incrementTimer(30);
+                    });
+                  },
+                  child: const Text('+30', style: TextStyle(fontSize: 20)),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}

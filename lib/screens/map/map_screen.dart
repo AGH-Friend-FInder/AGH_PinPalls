@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/group.dart';
 import '../../provider.dart';
 
 final GeoPoint startPosition = GeoPoint(
@@ -87,42 +88,65 @@ class _MapScreenState extends State<MapScreen> with OSMMixinObserver {
     _controller.limitAreaMap(areaBox);
 
     Timer.periodic(const Duration(seconds: 10), (timer) async {
+      debugPrint("Fetching pins...");
+
       await Provider.of<PinProvider>(context, listen: false).fetchVisiblePins(
         Provider.of<UserProvider>(context, listen: false).user!.id,
       );
 
-      if (mounted) {
-        Set<GeoPoint> markersSet = _mapMarkers.keys.toSet();
+      if (!mounted) return;
 
-        for (var pin in Provider.of<PinProvider>(context, listen: false).pins) {
-          GeoPoint location = GeoPoint(
-            latitude: pin.latitude,
-            longitude: pin.longitude,
+      await Provider.of<GroupProvider>(
+        context,
+        listen: false,
+      ).fetchGroupsFromUserId(
+        Provider.of<UserProvider>(context, listen: false).user!.id,
+      );
+
+      Map<int, Group> groups = {};
+
+      if (!mounted) return;
+      Provider.of<GroupProvider>(context, listen: false).userGroups.forEach((
+        group,
+      ) {
+        groups[group.id] = group;
+      });
+
+      Set<GeoPoint> markersSet = _mapMarkers.keys.toSet();
+
+      for (var pin in Provider.of<PinProvider>(context, listen: false).pins) {
+        GeoPoint location = GeoPoint(
+          latitude: pin.latitude,
+          longitude: pin.longitude,
+        );
+
+        if (markersSet.contains(location)) {
+          markersSet.remove(location);
+
+          _mapMarkers[location]!.peopleCounter = pin.numberOfPeople;
+          _mapMarkers[location]!.time = pin.expireAtMinutes;
+        } else {
+          _mapMarkers[location] = MapTagState(
+            position: location,
+            peopleCounter: pin.numberOfPeople,
+            time: pin.expireAtMinutes,
           );
 
-          if (markersSet.contains(location)) {
-            markersSet.remove(location);
+          _mapMarkers[location]!.selectedTags =
+              pin.groupsId.map((pin) {
+                return groups[pin]!;
+              }).toList();
 
-            _mapMarkers[location]!.peopleCounter = pin.numberOfPeople;
-            _mapMarkers[location]!.time = pin.expireAtMinutes!;
-          } else {
-            _mapMarkers[location] = MapTagState(
-              position: location,
-              peopleCounter: pin.numberOfPeople,
-              time: 2137,
-            );
-
-            _controller.addMarker(
-              location,
-              markerIcon: MarkerIcon(
-                icon: const Icon(
-                  Icons.people_alt,
-                  color: Colors.orange,
-                  size: 48,
-                ),
+          _controller.addMarker(
+            location,
+            markerIcon: MarkerIcon(
+              icon: const Icon(
+                Icons.people_alt,
+                color: Colors.orange,
+                size: 48,
               ),
-            );
-          }
+            ),
+          );
         }
 
         for (var location in markersSet) {
