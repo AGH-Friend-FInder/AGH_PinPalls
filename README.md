@@ -35,8 +35,40 @@ W aplikacji wykorzytano technologie:
 Aplikacja AGH-PinPals jest kompatybilna z systemami **Android**
 
 ## Instrukcja uruchomienia
+### Java 21
+Do kompilacji serwera i aplikacji mobilnej potrzebujemy Javy 21. Można ją pobrać np. [tutaj](https://www.oracle.com/pl/java/technologies/downloads/#java21)
+Możemy zweryfikować posiadaną wersję Javy poprzez: `java --version`
 
+![java_version](https://github.com/user-attachments/assets/1dcf3c96-0b2d-4706-af32-c28d35fd2fce)
 
+### Aplikacja androidowa
+1. Instalacja [fluttera](https://docs.flutter.dev/get-started/install/)
+   - weryfikacja instalacji `flutter --version`
+   - weryfikacja potrzebnych narzędzi `flutter doctor`
+  ![flutter_doctor](https://github.com/user-attachments/assets/80d341ea-21cd-4d8d-a2a5-e7e7cb1dbe7c)
+2. Android SDK
+   - najłatwiej androidowe sdk pobrać razem z [Android Studio](https://developer.android.com/studio?hl=pl)
+   - po instalacji możemy zweryfikować czy polecenie `flutter doctor` wykrywa android sdk. Prawdopodobnie będzie narzekał na brak command-line tools.
+   - w menu startowym Android Studio należy rozwinąć "More Actions" i wejść w "SDK Manager". Tam z zakładki SDK Tools należy wybrać i zainstalować "Android SDK command-line Tools (latest)"
+   ![cmdline_tools](https://github.com/user-attachments/assets/aa707172-2cf8-4d7c-bd8f-f310d4c5a859)
+   - następnie musimy zaakceptować licencje androida `flutter doctor --android-licenses`
+   - teraz flutter doctor nie powinien już na nic narzekać. 
+4. Zbudowanie aplikacji mobilnej:
+```
+git clone https://github.com/AGH-Friend-FInder/agh_pin_palls
+cd agh_pin_palls
+
+flutter build apk --release
+```
+Zbudowany plik .apk do wgrania na telefon lub emulator znajdziemy w folderze wypisanym pod koniec budowy aplikacji. U nas `agh_pin_palls/build/app/outputs/flutter-apk/app-release.apk `
+5. Aplikację powinniśmy muc bez problemy uruchomić także poprzez emulator wbudowany w Android Studio otwierając repozytorium w IDE.
+### Serwer backend
+```
+git clone https://github.com/AGH-Friend-FInder/server
+cd server
+
+./gradlew run
+```
 ## Opis procesu powstawania projektu
 Piatek:
 1. Burza mózgów
