@@ -61,7 +61,12 @@ cd agh_pin_palls
 flutter build apk --release
 ```
 Zbudowany plik .apk do wgrania na telefon lub emulator znajdziemy w folderze wypisanym pod koniec budowy aplikacji. U nas `agh_pin_palls/build/app/outputs/flutter-apk/app-release.apk `
-5. Aplikację powinniśmy muc bez problemy uruchomić także poprzez emulator wbudowany w Android Studio otwierając repozytorium w IDE.
+5. Aby uruchomić aplikację w emulatorze w Android Studio musimy otworzyć sklonowane repo w IDE, a następnie:
+   - pobrać plugin Fluttera
+   - pobrać [Dart SDK](https://dart.dev/get-dart#install)
+   - skonfigurować SDK w Android Studio (Settings > Languages & Frameworks > Dart)
+     - Enable Dart support for the project agh_pin_palls
+     - Dart SDK Path  
 ### Serwer backend
 ```
 git clone https://github.com/AGH-Friend-FInder/server
