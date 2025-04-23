@@ -30,7 +30,7 @@ W aplikacji wykorzytano technologie:
 - Flutter
 - Dart
 - Spring Boot
-- SQLite
+- MySQL
 
 Aplikacja AGH-PinPals jest kompatybilna z systemami **Android**
 
@@ -109,7 +109,41 @@ Niedziela:
 
 ## Elementy technicznej dokumentacji
 
+### Endpointy REST API
 
+Endpointy oraz ich przykładowe żądania i odpowiedzi zostały szczegółowo opisane w pliku [`README.md`](https://github.com/AGH-Friend-FInder/server/blob/master/README.md).  
+
+### Wzorce i rozwiązania techniczne
+
+- **DTO (Data Transfer Object)**  
+  Klasy `UserDTO`, `GroupDTO` i inne oddzielają dane transferowane przez API od modeli domenowych – poprawia to bezpieczeństwo i modularność kodu.
+
+- **Dependency Injection (DI)**  
+  Spring automatycznie wstrzykuje zależności za pomocą adnotacji `@Autowired`, co pozwala łatwo zarządzać komponentami i ogranicza sprzężenie.
+
+- **Repository Pattern z JPA**  
+  Dostęp do danych odbywa się przez interfejsy repozytoriów (`UserRepository`, `GroupRepository` itd.) wykorzystujące mechanizmy ORM.
+
+- **ORM z wykorzystaniem JPA**  
+  Modele takie jak `User`, `Group` oraz `CurrentPins` zostały odwzorowane jako encje JPA, umożliwiając mapowanie obiektów Java bezpośrednio na tabele relacyjnej bazy danych.
+
+### Baza danych
+
+System korzysta z relacyjnej bazy danych **MySQL**, która została zhostowana za pomocą platformy [Aiven Console](https://console.aiven.io).  
+Połączenie z bazą jest skonfigurowane w pliku `application.properties`.
+
+**Uwaga bezpieczeństwa:**  
+Ze względu na charakter projektu (hackathon), dane dostępowe do bazy zostały wypuszczone bezpośrednio w repozytorium. Jesteśmy świadomi, że jest to **zła praktyka bezpieczeństwa** – w środowisku produkcyjnym należy bezwzględnie unikać takich rozwiązań.
+
+### Schemat bazy danych
+
+Poniżej znajduje się diagram ilustrujący strukturę bazy danych (tabele, klucze obce, relacje):
+
+![image](https://github.com/user-attachments/assets/ad258f52-6844-48e3-ab28-b3780aa3cd8f)
+
+Diagram zawiera m.in.:
+- tabele: `users`, `groups`, `current_pins`
+- relacje many-to-many pomiędzy `users` a `groups`, oraz `groups` a `current_pins`
 
 
 ## Podsumowanie
