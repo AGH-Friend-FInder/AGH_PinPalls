@@ -137,14 +137,9 @@ Ze względu na charakter projektu (hackathon), dane dostępowe do bazy zostały 
 
 ### Schemat bazy danych
 
-Poniżej znajduje się diagram ilustrujący strukturę bazy danych (tabele, klucze obce, relacje):
+Poniżej znajduje się diagram ilustrujący strukturę bazy danych:
 
 ![image](https://github.com/user-attachments/assets/ad258f52-6844-48e3-ab28-b3780aa3cd8f)
-
-Diagram zawiera m.in.:
-- tabele: `users`, `groups`, `current_pins`
-- relacje many-to-many pomiędzy `users` a `groups`, oraz `groups` a `current_pins`
-
 
 ## Podsumowanie
 Co poszło dobrze:
