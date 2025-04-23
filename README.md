@@ -130,7 +130,7 @@ Endpointy oraz ich przykładowe żądania i odpowiedzi zostały szczegółowo op
 ### Baza danych
 
 System korzysta z relacyjnej bazy danych **MySQL**, która została zhostowana za pomocą platformy [Aiven Console](https://console.aiven.io).  
-Połączenie z bazą jest skonfigurowane w pliku `application.properties`.
+Połączenie z bazą jest skonfigurowane w pliku [`application.properties`](https://github.com/AGH-Friend-FInder/server/blob/master/src/main/resources/application.properties).
 
 **Uwaga bezpieczeństwa:**  
 Ze względu na charakter projektu (hackathon), dane dostępowe do bazy zostały wypuszczone bezpośrednio w repozytorium. Jesteśmy świadomi, że jest to **zła praktyka bezpieczeństwa** – w środowisku produkcyjnym należy bezwzględnie unikać takich rozwiązań.
